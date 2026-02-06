@@ -24,9 +24,6 @@ public class UserServiceImpl implements UserService {
         if (userDto.getEmail() == null || userDto.getEmail().isBlank()) {
             throw new IllegalArgumentException("Email is required.");
         }
-        /*if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new IllegalArgumentException("Email already exist.");
-        }*/
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistException("Email already exist.");
         }

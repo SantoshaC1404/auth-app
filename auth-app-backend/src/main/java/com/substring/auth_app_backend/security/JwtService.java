@@ -3,7 +3,10 @@ package com.substring.auth_app_backend.security;
 import com.substring.auth_app_backend.entities.Role;
 import com.substring.auth_app_backend.entities.User;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Getter
+@Setter
 public class JwtService {
 
     private final SecretKey key;
@@ -27,17 +32,34 @@ public class JwtService {
             @Value("${security.jwt.secret}") String secret,
             @Value("${security.jwt.access-ttl-seconds}") long accessTtlSeconds,
             @Value("${security.jwt.refresh-ttl-seconds}") long refreshTtlSeconds,
-            @Value("${security.jwt.issuer}") String issuer) {
+            @Value("${security.jwt.issuer}") String issuer
+    ) {
 
-        if (secret == null || secret.length() < 64) {
-            throw new IllegalArgumentException("Invalid secret.");
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException("JWT secret is missing");
         }
 
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        byte[] keyBytes;
+
+        try {
+            // ✅ Base64 decode
+            keyBytes = Decoders.BASE64.decode(secret);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalStateException("JWT secret must be Base64 encoded", ex);
+        }
+
+        if (keyBytes.length < 64) {
+            throw new IllegalStateException(
+                    "JWT secret must be at least 64 bytes after Base64 decoding (HS512)"
+            );
+        }
+
+        this.key = Keys.hmacShaKeyFor(keyBytes);
         this.accessTtlSeconds = accessTtlSeconds;
         this.refreshTtlSeconds = refreshTtlSeconds;
         this.issuer = issuer;
     }
+
 
     //  generate token:
     public String generateToken(User user) {

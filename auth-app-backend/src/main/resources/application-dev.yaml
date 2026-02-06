@@ -33,7 +33,8 @@ logging:
 
 security:
   jwt:
-    secret: ${JWT_SECRET:bA9!2#xP$1L@zY7qM0wE8QF%R3^&*JHkC9N4}
+#    secret: "${JWT_SECRET:ZmFrZS1qd3Qtc2VjcmV0LWtleS0yNTYtYml0LXN1cGVyLXNlY3VyZQ==}"
+    secret: "${JWT_SECRET:3dPDmULOGcbB71hEZK4XBWKFN+yY3kuVjBVwGMbBYx14oghXb50aCxRdMDM2+gBR6kWhxelq7lEx16tSrkdBVg==}"
     issuer: ${JWT_ISSUER:substring-auth-app}
     access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:3600}
     refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:86400}

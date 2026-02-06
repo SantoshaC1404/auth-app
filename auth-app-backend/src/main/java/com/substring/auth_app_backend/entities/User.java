@@ -19,7 +19,7 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id")
+    @Column(name = "user_id", length = 36)
     private UUID id;
 
     @Column(name = "user_name", length = 500)
@@ -57,5 +57,4 @@ public class User {
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
-
- }
+}
