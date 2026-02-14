@@ -12,9 +12,13 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -33,7 +37,7 @@ public class UserServiceImpl implements UserService {
         //  role assigned for user ___ for authentication.
         User user = modelMapper.map(userDto, User.class);
         user.setProvider(userDto.getProvider() != null ? userDto.getProvider() : Provider.LOCAL);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User savedUser = userRepository.save(user);
 
         return modelMapper.map(savedUser, UserDto.class);
@@ -49,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(String userId) {
-        User user = userRepository.findById(UserHelper.parseUUID(userId))
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found."));
         return modelMapper.map(user, UserDto.class);
     }
@@ -66,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
         User existingUser = userRepository
-                .findById(UserHelper.parseUUID(userId))
+                .findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found."));
 
         if (userDto.getName() != null) {
@@ -92,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String userId) {
         User user = userRepository
-                .findById(UserHelper.parseUUID(userId))
+                .findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found."));
         userRepository.delete(user);
     }
