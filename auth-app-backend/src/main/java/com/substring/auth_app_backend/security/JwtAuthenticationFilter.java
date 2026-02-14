@@ -29,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
     private Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
@@ -48,8 +49,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String userId = payload.getSubject();
                 UUID parsedUUID = UserHelper.parseUUID(userId);
 
-                userRepository.findById(parsedUUID)
+                logger.info("Parsed UUID: {}", parsedUUID);
+
+//                userRepository.findById(parsedUUID)
+                userRepository.findByEmail(payload.get("email", String.class))
                         .ifPresent(user -> {
+
+                            logger.info("User found: {}", user.getEmail());
+                            logger.info("User enabled: {}",user.isEnabled());
 
                             if (user.isEnabled()) {
                                 List<SimpleGrantedAuthority> authorities = user.getRoles() == null ? List.of() :
@@ -70,10 +77,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             }
                         });
             } catch (ExpiredJwtException exception) {
-                request.setAttribute("Error: ", "Token Expired.");
+                request.setAttribute("Error:", "Token Expired.");
                 // exception.printStackTrace();
             } catch (Exception exception) {
-                request.setAttribute("Error: ", "Invalid Token.");
+                request.setAttribute("Error:", "Invalid Token.");
                 //exception.printStackTrace();
             }
         }

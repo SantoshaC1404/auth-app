@@ -19,7 +19,7 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id", length = 36)
+    @Column(name = "user_id", columnDefinition = "CHAR(36)", nullable = false, updatable = false, length = 36)
     private UUID id;
 
     @Column(name = "user_name", length = 500)

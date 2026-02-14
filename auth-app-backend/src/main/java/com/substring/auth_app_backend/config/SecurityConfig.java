@@ -52,7 +52,7 @@ public class SecurityConfig {
                                 .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint((request, response, authException) -> {
                     // error message
-                    // authException.printStackTrace();
+                     authException.printStackTrace();
                     logger.error("Error: {}", exception.getClass().getName());
                     response.setStatus(401);
                     response.setContentType("application/json");

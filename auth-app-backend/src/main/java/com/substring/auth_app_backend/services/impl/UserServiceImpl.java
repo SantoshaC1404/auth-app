@@ -10,6 +10,7 @@ import com.substring.auth_app_backend.repositories.UserRepository;
 import com.substring.auth_app_backend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
         //  role assigned for user ___ for authentication.
         User user = modelMapper.map(userDto, User.class);
         user.setProvider(userDto.getProvider() != null ? userDto.getProvider() : Provider.LOCAL);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User savedUser = userRepository.save(user);
 
         return modelMapper.map(savedUser, UserDto.class);

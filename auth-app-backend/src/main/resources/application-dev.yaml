@@ -35,11 +35,12 @@ security:
   jwt:
 #    secret: "${JWT_SECRET:ZmFrZS1qd3Qtc2VjcmV0LWtleS0yNTYtYml0LXN1cGVyLXNlY3VyZQ==}"
     secret: "${JWT_SECRET:3dPDmULOGcbB71hEZK4XBWKFN+yY3kuVjBVwGMbBYx14oghXb50aCxRdMDM2+gBR6kWhxelq7lEx16tSrkdBVg==}"
-    issuer: ${JWT_ISSUER:substring-auth-app}
+    issuer: ${JWT_ISSUER:api.substring.com}
     access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:3600}
     refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:86400}
     refresh-token-cookie-name: ${JWT_REFRESH_COOKIE_NAME:refreshToken}
     cookie-secure: ${JWT_COOKIE_SECURE:true}
     cookie-http-only: ${JWT_HTTP_COOKIE_ONLY:true}
-    cookie-same-site: ${JWT_COOKIE_SAME_SITE:true}
+    cookie-same-site: ${JWT_COOKIE_SAME_SITE:lax}
+    cookie-domain: ${JWT_COOKIE_DOMAIN:localhost}
 

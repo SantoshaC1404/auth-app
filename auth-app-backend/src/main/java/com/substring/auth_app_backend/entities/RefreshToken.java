@@ -37,6 +37,7 @@ public class RefreshToken {
 
     @Column(updatable = false)
     private boolean revoked;
+
     private String replacedByToken;
 
 }
