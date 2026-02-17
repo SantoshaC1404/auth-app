@@ -20,7 +20,7 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @Column(name = "jti", unique = true, updatable = false, nullable = false)
     private String jti;
@@ -32,10 +32,8 @@ public class RefreshToken {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    @Column(updatable = false)
     private Instant expiresAt;
 
-    @Column(updatable = false)
     private boolean revoked;
 
     private String replacedByToken;

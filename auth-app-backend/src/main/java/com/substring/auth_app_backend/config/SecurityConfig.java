@@ -49,6 +49,8 @@ public class SecurityConfig {
                         authorizeHttpRequest -> authorizeHttpRequest
                                 .requestMatchers("/api/v1/auth/register").permitAll()
                                 .requestMatchers("/api/v1/auth/login").permitAll()
+                                .requestMatchers("/api/v1/auth/refresh-token").permitAll()
+                                .requestMatchers("/api/v1/auth/logout").permitAll()
                                 .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint((request, response, authException) -> {
 

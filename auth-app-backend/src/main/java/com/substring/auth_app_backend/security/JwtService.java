@@ -61,7 +61,7 @@ public class JwtService {
     }
 
 
-    //  generate token:
+    //  generate access token:
     public String generateToken(User user) {
         Instant now = Instant.now();
         List<String> roles = user.getRoles() == null ? List.of() : user.getRoles().stream().map(Role::getName).toList();
@@ -113,9 +113,9 @@ public class JwtService {
         return "refresh".equals(c.get("type"));
     }
 
-    public UUID getUserId(String token){
+    public String getUserId(String token){
         Claims c=parse(token).getPayload();
-        return UUID.fromString(c.getSubject());
+        return c.getSubject();
     }
 
     public String getJti(String token){
