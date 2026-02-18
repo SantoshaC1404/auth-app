@@ -3,6 +3,8 @@ package com.substring.auth_app_backend.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.substring.auth_app_backend.exceptions.ApiError;
 import com.substring.auth_app_backend.security.JwtAuthenticationFilter;
+import com.substring.auth_app_backend.security.OAuth2SuccessHandler;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.util.Map;
 
 @Configuration
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
+@AllArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+    private final OAuth2SuccessHandler successHandler;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -52,6 +56,12 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/auth/refresh-token").permitAll()
                                 .requestMatchers("/api/v1/auth/logout").permitAll()
                                 .anyRequest().authenticated())
+                // OAuth2 configuration
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(successHandler)
+                        .failureHandler(null)
+                )
+                .logout(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint((request, response, authException) -> {
 
                     // error message
