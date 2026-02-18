@@ -36,6 +36,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Provider provider = Provider.LOCAL;
 
+    private String providerId;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles_mapping",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -9,8 +9,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -22,7 +24,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -30,6 +32,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    @Value("${app.auth.frontend.success-redirect}")
+    private String frontendSuccessUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -55,34 +60,50 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 String email = oAuth2User.getAttributes().getOrDefault("email", "").toString();
                 String picture = oAuth2User.getAttributes().getOrDefault("picture", "").toString();
 
-                user = User.builder()
+                User newUser = User.builder()
                         .email(email)
                         .name(name)
                         .image(picture)
                         .provider(Provider.GOOGLE)
+                        .providerId(googleId)
                         .enabled(true)
                         .build();
 
                 // Here you would typically check if the user exists in your database and create them if not
-                userRepository.findByEmail(email).ifPresentOrElse(user1 -> {
-                    logger.info("User already exists: {}", user1.getEmail());
-                    logger.info(user1.toString());
-                }, () -> {
-                    userRepository.save(user);
-                    logger.info("New user created: {}", user.getEmail());
+                user = userRepository.findByEmail(email).orElseGet(() -> {
+                    logger.info("Creating new user with email: {}", email);
+                    return userRepository.save(newUser);
                 });
             }
-            /*case "github" -> {
-                String email = oAuth2User.getAttribute("email");
-                String name = oAuth2User.getAttribute("name");
-                logger.info("GitHub user email: {}, name: {}", email, name);
-                // Here you would typically check if the user exists in your database and create them if not
-            }*/
+            case "github" -> {
+                String githubId = oAuth2User.getAttributes().getOrDefault("id", "").toString();
+                String name = oAuth2User.getAttributes().getOrDefault("login", "").toString();
+                String email = oAuth2User.getAttributes().getOrDefault("email", "").toString();
+                String picture = oAuth2User.getAttributes().getOrDefault("avatar_url", "").toString();
+
+                if (email == null) {
+                    email = name + "@github.com";
+                }
+
+                User newUser = User.builder()
+                        .email(email)
+                        .name(name)
+                        .image(picture)
+                        .provider(Provider.GITHUB)
+                        .providerId(githubId)
+                        .enabled(true)
+                        .build();
+
+                user = userRepository.findByEmail(email).orElseGet(() -> {
+                    return userRepository.save(newUser);
+                });
+            }
             default -> {
                 logger.warn("Unknown registrationId: {}", registrationId);
                 throw new RuntimeException("Invalid registrationId: " + registrationId);
             }
         }
+        
         String jti = UUID.randomUUID().toString();
         RefreshToken refreshTokenObj = RefreshToken.builder()
                 .jti(jti)
@@ -96,7 +117,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtService.generateRefreshToken(user, refreshTokenObj.getJti());
         cookieService.attachRefreshTokenToCookie(response, refreshToken, (int) jwtService.getRefreshTtlSeconds());
 
-        response.getWriter().write("Login successful");
+        // response.getWriter().write("Login successful");
+        response.sendRedirect(frontendSuccessUrl);
 
     }
 }
