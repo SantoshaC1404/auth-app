@@ -51,10 +51,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorizeHttpRequest -> authorizeHttpRequest
-                                .requestMatchers("/api/v1/auth/register").permitAll()
-                                .requestMatchers("/api/v1/auth/login").permitAll()
-                                .requestMatchers("/api/v1/auth/refresh-token").permitAll()
-                                .requestMatchers("/api/v1/auth/logout").permitAll()
+                                .requestMatchers(AppConstants.PUBLIC_URLS).permitAll()
                                 .anyRequest().authenticated())
                 // OAuth2 configuration
                 .oauth2Login(oauth2 -> oauth2
