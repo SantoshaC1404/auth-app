@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Link, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { NavLink } from "react-router";
 import { ThemeToggle } from "./theme-toggle";
 

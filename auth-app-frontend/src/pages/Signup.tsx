@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "../components/ui/card";
-import { Label } from "../components/ui/label";
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,10 +22,13 @@ import { z } from "zod";
 
 const signupSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Enter a valid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string(),
+    name: z.string().trim().min(3, "Name must be at least 3 characters"),
+    email: z.string().trim().email("Enter a valid email"),
+    password: z
+      .string()
+      .trim()
+      .min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().trim(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -73,9 +76,19 @@ const Signup = () => {
               {/* Name */}
               <div className="space-y-2">
                 <Label>Name</Label>
-                <Input placeholder="John Doe" {...register("name")} />
+                <Input
+                  placeholder="John Doe"
+                  {...register("name")}
+                  className={
+                    errors.name
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : ""
+                  }
+                />
                 {errors.name && (
-                  <p className="text-sm text-red-500">{errors.name.message}</p>
+                  <p className="text-sm text-red-500 text-left block">
+                    {errors.name.message}
+                  </p>
                 )}
               </div>
 
@@ -86,9 +99,12 @@ const Signup = () => {
                   type="email"
                   placeholder="example@email.com"
                   {...register("email")}
+                  className={errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
                 />
                 {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                  <p className="text-sm text-red-500 text-left block">
+                    {errors.email.message}
+                  </p>
                 )}
               </div>
 
@@ -101,6 +117,7 @@ const Signup = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
                     {...register("password")}
+                    className={errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
                   />
 
                   <button
@@ -113,7 +130,7 @@ const Signup = () => {
                 </div>
 
                 {errors.password && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-red-500 text-left block">
                     {errors.password.message}
                   </p>
                 )}
@@ -126,10 +143,11 @@ const Signup = () => {
                   type="password"
                   placeholder="Confirm password"
                   {...register("confirmPassword")}
+                  className={errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}
                 />
 
                 {errors.confirmPassword && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-red-500 text-left block">
                     {errors.confirmPassword.message}
                   </p>
                 )}
@@ -138,7 +156,7 @@ const Signup = () => {
               {/* Signup Button */}
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full cursor-pointer"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Creating account..." : "Sign Up"}
