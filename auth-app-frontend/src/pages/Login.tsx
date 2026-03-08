@@ -2,16 +2,22 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
-
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "../components/ui/card";
 import { Label } from "../components/ui/label";
 import { Checkbox } from "../components/ui/checkbox";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 const loginSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -21,7 +27,6 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 const Login = () => {
-
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -40,28 +45,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted px-4">
-
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted px-4 mt-5">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-
         <Card>
-
           <CardHeader>
             <CardTitle className="text-2xl">Welcome Back</CardTitle>
-            <CardDescription>
-              Login to your account
-            </CardDescription>
+            <CardDescription>Login to your account</CardDescription>
           </CardHeader>
 
           <CardContent>
-
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
               {/* Email */}
               <div className="space-y-2">
                 <Label>Email</Label>
@@ -71,9 +69,7 @@ const Login = () => {
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-sm text-red-500">
-                    {errors.email.message}
-                  </p>
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
                 )}
               </div>
 
@@ -82,7 +78,6 @@ const Login = () => {
                 <Label>Password</Label>
 
                 <div className="relative">
-
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
@@ -96,7 +91,6 @@ const Login = () => {
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
-
                 </div>
 
                 {errors.password && (
@@ -108,7 +102,6 @@ const Login = () => {
 
               {/* Remember + Forgot */}
               <div className="flex items-center justify-between text-sm">
-
                 <div className="flex items-center gap-2">
                   <Checkbox />
                   <span>Remember me</span>
@@ -120,18 +113,12 @@ const Login = () => {
                 >
                   Forgot password?
                 </Link>
-
               </div>
 
               {/* Login Button */}
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-              >
+              <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
                 {isSubmitting ? "Logging in..." : "Login"}
               </Button>
-
             </form>
 
             {/* Divider */}
@@ -141,8 +128,39 @@ const Login = () => {
               <div className="h-px flex-1 bg-border"></div>
             </div>
 
+            {/* OAuth Login Buttons */}
+            <div className="space-y-3">
+              {/* Google Login */}
+              <Button
+                variant="outline"
+                className="w-full flex items-center gap-2 cursor-pointer"
+                type="button"
+                onClick={() =>
+                  (window.location.href =
+                    "http://localhost:8080/oauth2/authorization/google")
+                }
+              >
+                <FcGoogle size={20} />
+                Continue with Google
+              </Button>
+
+              {/* GitHub Login */}
+              <Button
+                variant="outline"
+                className="w-full flex items-center gap-2 cursor-pointer"
+                type="button"
+                onClick={() =>
+                  (window.location.href =
+                    "http://localhost:8080/oauth2/authorization/github")
+                }
+              >
+                <FaGithub size={18} />
+                Continue with GitHub
+              </Button>
+            </div>
+
             {/* Signup Link */}
-            <p className="text-sm text-center text-muted-foreground">
+            <p className="text-sm text-center mt-5 text-muted-foreground">
               Don't have an account?{" "}
               <Link
                 to="/signup"
@@ -151,11 +169,8 @@ const Login = () => {
                 Create account
               </Link>
             </p>
-
           </CardContent>
-
         </Card>
-
       </motion.div>
     </div>
   );

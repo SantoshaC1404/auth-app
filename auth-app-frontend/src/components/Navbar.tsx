@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Menu } from "lucide-react";
+import { Link, Menu } from "lucide-react";
 import { NavLink } from "react-router";
+import { ThemeToggle } from "./theme-toggle";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -34,6 +35,9 @@ const Navbar = () => {
             Signup
           </Button>
         </NavLink>
+
+        {/* Theme Button AFTER Signup */}
+        <ThemeToggle />
       </div>
 
       {/* Mobile Menu Button */}
@@ -51,6 +55,9 @@ const Navbar = () => {
           <Button size="sm" variant="outline">
             Signup
           </Button>
+          
+          {/* Theme Button AFTER Signup */}
+        <ThemeToggle />
         </div>
       )}
     </nav>
