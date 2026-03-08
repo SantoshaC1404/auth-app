@@ -10,10 +10,14 @@ import Services from "./pages/Services.tsx";
 import ProtectedRoute from "./auth/ProtectedRoute.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import { ThemeProvider } from "./components/theme-provider.tsx";
+import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
     <BrowserRouter>
+      {/* Global Toast Container */}
+      <Toaster position="top-right" reverseOrder={false} />
+
       <Routes>
         <Route path="/" element={<RootLayout />}>
           <Route index element={<App />} />

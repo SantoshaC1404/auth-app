@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import toast from "react-hot-toast";
 
 const signupSchema = z
   .object({
@@ -43,20 +44,62 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors, isSubmitting },
   } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
   });
 
+  /*
   const onSubmit = async (data: SignupForm) => {
-    console.log("Signup Data:", data);
+    try {
+      console.log("Signup Data:", data);
 
-    // TODO connect Spring Boot API
-    // await axios.post("/api/auth/register", data)
+      // Example API call
+      // await axios.post("http://localhost:8080/api/auth/register", data);
+
+      toast.success("Account created successfully!");
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+  */
+  /*
+  const onSubmit = async () => {
+    const promise = new Promise((resolve) => {
+      setTimeout(() => resolve("success"), 1500);
+    });
+
+    toast.promise(promise, {
+      loading: "Creating account...",
+      success: "Account created successfully!",
+      error: "Something went wrong",
+    });
+  };
+  */
+  const onSubmit = async (data: SignupForm) => {
+    try {
+      console.log("Signup Data:", data);
+
+      // await axios.post("/api/auth/register", data)
+
+      toast.success("Account created successfully!");
+    } catch (error: any) {
+      toast.error("Registration failed");
+    }
   };
 
+  handleSubmit(onSubmit, (errors) => {
+    const firstErrorKey = Object.keys(errors)[0] as keyof SignupForm;
+
+    setFocus(firstErrorKey);
+    toast.dismiss();
+    toast.error(errors[firstErrorKey]?.message || "Invalid input");
+  });
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted px-4 mt-10">
+    // <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted px-4 pt-24">
+    <div className="flex items-center justify-center min-h-full px-4">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -72,7 +115,19 @@ const Signup = () => {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* <form onSubmit={handleSubmit(onSubmit)} className="space-y-4"> */}
+            <form
+              onSubmit={handleSubmit(onSubmit, (errors) => {
+                const firstErrorKey = Object.keys(
+                  errors,
+                )[0] as keyof SignupForm;
+
+                setFocus(firstErrorKey);
+
+                toast.error(errors[firstErrorKey]?.message || "Invalid input");
+              })}
+              className="space-y-4"
+            >
               {/* Name */}
               <div className="space-y-2">
                 <Label>Name</Label>
@@ -85,11 +140,11 @@ const Signup = () => {
                       : ""
                   }
                 />
-                {errors.name && (
+                {/* {errors.name && (
                   <p className="text-sm text-red-500 text-left block">
                     {errors.name.message}
                   </p>
-                )}
+                )} */}
               </div>
 
               {/* Email */}
@@ -99,7 +154,11 @@ const Signup = () => {
                   type="email"
                   placeholder="example@email.com"
                   {...register("email")}
-                  className={errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
+                  className={
+                    errors.email
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : ""
+                  }
                 />
                 {errors.email && (
                   <p className="text-sm text-red-500 text-left block">
@@ -117,7 +176,11 @@ const Signup = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
                     {...register("password")}
-                    className={errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
+                    className={
+                      errors.password
+                        ? "border-red-500 focus-visible:ring-red-500"
+                        : ""
+                    }
                   />
 
                   <button
@@ -143,7 +206,11 @@ const Signup = () => {
                   type="password"
                   placeholder="Confirm password"
                   {...register("confirmPassword")}
-                  className={errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}
+                  className={
+                    errors.confirmPassword
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : ""
+                  }
                 />
 
                 {errors.confirmPassword && (
@@ -173,7 +240,7 @@ const Signup = () => {
             {/* Google Signup */}
             <Button
               variant="outline"
-              className="w-full flex items-center gap-2 mb-3"
+              className="w-full flex items-center gap-2 mb-3 cursor-pointer"
               type="button"
               onClick={() =>
                 (window.location.href =
@@ -187,7 +254,7 @@ const Signup = () => {
             {/* GitHub Signup */}
             <Button
               variant="outline"
-              className="w-full flex items-center gap-2"
+              className="w-full flex items-center gap-2 cursor-pointer"
               type="button"
               onClick={() =>
                 (window.location.href =
