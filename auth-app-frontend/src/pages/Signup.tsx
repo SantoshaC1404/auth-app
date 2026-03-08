@@ -21,6 +21,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
 
+import { registerUser } from "@/services/auth.service";
+import type { RegisterRequest } from "@/models/auth.model";
+
 const signupSchema = z
   .object({
     name: z.string().trim().min(3, "Name must be at least 3 characters"),
@@ -50,55 +53,26 @@ const Signup = () => {
     resolver: zodResolver(signupSchema),
   });
 
-  /*
+  // ✅ API submit
   const onSubmit = async (data: SignupForm) => {
     try {
-      console.log("Signup Data:", data);
+      const response = await registerUser(data as RegisterRequest);
 
-      // Example API call
-      // await axios.post("http://localhost:8080/api/auth/register", data);
-
-      toast.success("Account created successfully!");
+      toast.success(response.message || "Account created successfully!");
     } catch (error: any) {
-      console.error(error);
-    }
-  };
-  */
-  /*
-  const onSubmit = async () => {
-    const promise = new Promise((resolve) => {
-      setTimeout(() => resolve("success"), 1500);
-    });
-
-    toast.promise(promise, {
-      loading: "Creating account...",
-      success: "Account created successfully!",
-      error: "Something went wrong",
-    });
-  };
-  */
-  const onSubmit = async (data: SignupForm) => {
-    try {
-      console.log("Signup Data:", data);
-
-      // await axios.post("/api/auth/register", data)
-
-      toast.success("Account created successfully!");
-    } catch (error: any) {
-      toast.error("Registration failed");
+      toast.error(error?.response?.data?.message || "Registration failed");
     }
   };
 
-  handleSubmit(onSubmit, (errors) => {
+  // ✅ Validation errors
+  const onError = (errors: any) => {
     const firstErrorKey = Object.keys(errors)[0] as keyof SignupForm;
 
     setFocus(firstErrorKey);
-    toast.dismiss();
     toast.error(errors[firstErrorKey]?.message || "Invalid input");
-  });
+  };
 
   return (
-    // <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted px-4 pt-24">
     <div className="flex items-center justify-center min-h-full px-4">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -115,17 +89,8 @@ const Signup = () => {
           </CardHeader>
 
           <CardContent>
-            {/* <form onSubmit={handleSubmit(onSubmit)} className="space-y-4"> */}
             <form
-              onSubmit={handleSubmit(onSubmit, (errors) => {
-                const firstErrorKey = Object.keys(
-                  errors,
-                )[0] as keyof SignupForm;
-
-                setFocus(firstErrorKey);
-
-                toast.error(errors[firstErrorKey]?.message || "Invalid input");
-              })}
+              onSubmit={handleSubmit(onSubmit, onError)}
               className="space-y-4"
             >
               {/* Name */}
@@ -140,11 +105,6 @@ const Signup = () => {
                       : ""
                   }
                 />
-                {/* {errors.name && (
-                  <p className="text-sm text-red-500 text-left block">
-                    {errors.name.message}
-                  </p>
-                )} */}
               </div>
 
               {/* Email */}
@@ -160,11 +120,6 @@ const Signup = () => {
                       : ""
                   }
                 />
-                {errors.email && (
-                  <p className="text-sm text-red-500 text-left block">
-                    {errors.email.message}
-                  </p>
-                )}
               </div>
 
               {/* Password */}
@@ -191,12 +146,6 @@ const Signup = () => {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-
-                {errors.password && (
-                  <p className="text-sm text-red-500 text-left block">
-                    {errors.password.message}
-                  </p>
-                )}
               </div>
 
               {/* Confirm Password */}
@@ -212,15 +161,9 @@ const Signup = () => {
                       : ""
                   }
                 />
-
-                {errors.confirmPassword && (
-                  <p className="text-sm text-red-500 text-left block">
-                    {errors.confirmPassword.message}
-                  </p>
-                )}
               </div>
 
-              {/* Signup Button */}
+              {/* Submit */}
               <Button
                 type="submit"
                 className="w-full cursor-pointer"
@@ -237,7 +180,7 @@ const Signup = () => {
               <div className="h-px flex-1 bg-border"></div>
             </div>
 
-            {/* Google Signup */}
+            {/* Google */}
             <Button
               variant="outline"
               className="w-full flex items-center gap-2 mb-3 cursor-pointer"
@@ -251,7 +194,7 @@ const Signup = () => {
               Continue with Google
             </Button>
 
-            {/* GitHub Signup */}
+            {/* GitHub */}
             <Button
               variant="outline"
               className="w-full flex items-center gap-2 cursor-pointer"
@@ -265,7 +208,6 @@ const Signup = () => {
               Continue with GitHub
             </Button>
 
-            {/* Login Link */}
             <p className="text-sm text-center text-muted-foreground mt-6">
               Already have an account?{" "}
               <Link
