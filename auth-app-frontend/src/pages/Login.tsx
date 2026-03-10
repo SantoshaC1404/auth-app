@@ -18,6 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { useLogin } from "@/hooks/useAuth";
+import toast from "react-hot-toast";
 
 const loginSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -26,22 +28,34 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
+const OAUTH_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { login, isLoading } = useLogin();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    setFocus,
+    formState: { errors },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginForm) => {
-    console.log("Login Data:", data);
+    try {
+      await login(data);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Login failed");
+    }
+  };
 
-    // TODO: connect Spring Boot API
-    // await axios.post("/api/auth/login", data)
+  const onError = (errors: any) => {
+    const firstErrorKey = Object.keys(errors)[0] as keyof LoginForm;
+
+    setFocus(firstErrorKey);
+    toast.error(errors[firstErrorKey]?.message || "Invalid input");
   };
 
   return (
@@ -59,7 +73,10 @@ const Login = () => {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={handleSubmit(onSubmit, onError)}
+              className="space-y-4"
+            >
               {/* Email */}
               <div className="space-y-2">
                 <Label>Email</Label>
@@ -67,23 +84,23 @@ const Login = () => {
                   type="email"
                   placeholder="example@email.com"
                   {...register("email")}
+                  className={errors.email ? "border-red-500" : ""}
                 />
-                {errors.email && (
+                {/* {errors.email && (
                   <p className="text-sm text-red-500">{errors.email.message}</p>
-                )}
+                )} */}
               </div>
 
               {/* Password */}
               <div className="space-y-2">
                 <Label>Password</Label>
-
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
                     {...register("password")}
+                    className={errors.password ? "border-red-500" : ""}
                   />
-
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -92,12 +109,11 @@ const Login = () => {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-
-                {errors.password && (
+                {/* {errors.password && (
                   <p className="text-sm text-red-500">
                     {errors.password.message}
                   </p>
-                )}
+                )} */}
               </div>
 
               {/* Remember + Forgot */}
@@ -106,7 +122,6 @@ const Login = () => {
                   <Checkbox />
                   <span>Remember me</span>
                 </div>
-
                 <Link
                   to="/forgot-password"
                   className="text-primary hover:underline"
@@ -115,43 +130,42 @@ const Login = () => {
                 </Link>
               </div>
 
-              {/* Login Button */}
-              <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
-                {isSubmitting ? "Logging in..." : "Login"}
+              <Button
+                type="submit"
+                className="w-full cursor-pointer"
+                disabled={isLoading}
+              >
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
             </form>
 
             {/* Divider */}
             <div className="flex items-center gap-2 my-6">
-              <div className="h-px flex-1 bg-border"></div>
+              <div className="h-px flex-1 bg-border" />
               <span className="text-xs text-muted-foreground">OR</span>
-              <div className="h-px flex-1 bg-border"></div>
+              <div className="h-px flex-1 bg-border" />
             </div>
 
             {/* OAuth Login Buttons */}
             <div className="space-y-3">
-              {/* Google Login */}
               <Button
                 variant="outline"
                 className="w-full flex items-center gap-2 cursor-pointer"
                 type="button"
                 onClick={() =>
-                  (window.location.href =
-                    "http://localhost:8080/oauth2/authorization/google")
+                  (window.location.href = `${OAUTH_BASE}/oauth2/authorization/google`)
                 }
               >
                 <FcGoogle size={20} />
                 Continue with Google
               </Button>
 
-              {/* GitHub Login */}
               <Button
                 variant="outline"
                 className="w-full flex items-center gap-2 cursor-pointer"
                 type="button"
                 onClick={() =>
-                  (window.location.href =
-                    "http://localhost:8080/oauth2/authorization/github")
+                  (window.location.href = `${OAUTH_BASE}/oauth2/authorization/github`)
                 }
               >
                 <FaGithub size={18} />
@@ -159,7 +173,6 @@ const Login = () => {
               </Button>
             </div>
 
-            {/* Signup Link */}
             <p className="text-sm text-center mt-5 text-muted-foreground">
               Don't have an account?{" "}
               <Link
