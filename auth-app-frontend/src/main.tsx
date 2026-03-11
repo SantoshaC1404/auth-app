@@ -12,6 +12,7 @@ import { ThemeProvider } from "./components/theme-provider.tsx";
 import { Toaster } from "react-hot-toast";
 import OAuthSuccess from "./pages/OAuthSuccess.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import PublicRoute from "./components/PublicRoute.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
@@ -20,18 +21,20 @@ createRoot(document.getElementById("root")!).render(
       <Toaster position="top-right" reverseOrder={false} />
 
       <Routes>
-        {/* Public layout */}
         <Route path="/" element={<RootLayout />}>
+          {/* Always accessible */}
           <Route index element={<App />} />
           <Route path="about" element={<About />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
           <Route path="services" element={<Services />} />
-
-          {/* OAuth callback page */}
           <Route path="auth/success" element={<OAuthSuccess />} />
 
-          {/* Protected routes */}
+          {/* Guest-only: redirect to /dashboard if already logged in */}
+          <Route element={<PublicRoute />}>
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+          </Route>
+
+          {/* Protected: redirect to /login if not logged in */}
           <Route element={<ProtectedRoute />}>
             <Route path="dashboard" element={<Dashboard />} />
           </Route>
