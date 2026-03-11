@@ -162,7 +162,7 @@ const HomePage = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-24 text-center px-6">
+      <section className="py-15 text-center px-6">
         <motion.h2
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -178,9 +178,9 @@ const HomePage = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
+      {/* <footer className="border-t py-8 text-center text-sm text-muted-foreground">
         © {new Date().getFullYear()} Auth App • Built with React + Spring Boot
-      </footer>
+      </footer> */}
     </div>
   );
 };
