@@ -7,20 +7,19 @@ import lombok.*;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id")
-    private UUID id;
+    @Column(name = "user_id", length = 36)
+    private String id;
 
     @Column(name = "user_name", length = 500)
     private String name;
@@ -37,8 +36,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Provider provider = Provider.LOCAL;
 
+    private String providerId;
+
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles",
+    @JoinTable(name = "user_roles_mapping",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -57,5 +58,4 @@ public class User {
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
-
- }
+}

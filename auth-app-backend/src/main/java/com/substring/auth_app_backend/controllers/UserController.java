@@ -24,31 +24,31 @@ public class UserController {
 
     //  get all users api
     @GetMapping
-    public ResponseEntity<Iterable<UserDto>> getAllUsers()  {
+    public ResponseEntity<Iterable<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     //  get user by email
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserDto>  getUserByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     //  get user by id
     @GetMapping("/userId/{userId}")
-    public ResponseEntity<UserDto>  getUserById(@PathVariable("userId") String userId) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable String userId) {
         return ResponseEntity.ok(userService.getUserById(userId));
     }
 
     //  delete user by id
     @DeleteMapping("/{userId}")
-    public void deleteUserById(@PathVariable("userId") String userId) {
+    public void deleteUserById(@PathVariable String userId) {
         userService.deleteUser(userId);
     }
 
     //  update user
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto>  updateUser(@RequestBody UserDto userDto, @PathVariable("userId") String userId) {
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable String userId) {
         return ResponseEntity.ok(userService.updateUser(userDto, userId));
     }
 
