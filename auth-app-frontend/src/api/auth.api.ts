@@ -20,3 +20,14 @@ export const refreshTokenApi = () =>
 
 /** POST /auth/logout — revokes server-side refresh token + clears cookie */
 export const logoutApi = () => api.post<void>("/auth/logout");
+
+/** POST /auth/forgot-password */
+export const forgotPasswordApi = (email: string) =>
+  publicApi.post<{ message: string }>("/auth/forgot-password", { email });
+
+/** POST /auth/reset-password */
+export const resetPasswordApi = (token: string, newPassword: string) =>
+  publicApi.post<{ message: string }>("/auth/reset-password", {
+    token,
+    newPassword,
+  });

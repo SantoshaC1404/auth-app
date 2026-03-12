@@ -3,6 +3,8 @@ import {
   loginApi,
   refreshTokenApi,
   logoutApi,
+  forgotPasswordApi,
+  resetPasswordApi,
 } from "@/api/auth.api";
 import { useAuthStore } from "@/store/auth.store";
 import type {
@@ -73,4 +75,17 @@ export async function logoutUser(): Promise<void> {
     // Always clear local state even if the server call fails
     useAuthStore.getState().logout();
   }
+}
+
+export async function forgotPassword(email: string): Promise<string> {
+  const response = await forgotPasswordApi(email);
+  return response.data.message;
+}
+
+export async function resetPassword(
+  token: string,
+  newPassword: string,
+): Promise<string> {
+  const response = await resetPasswordApi(token, newPassword);
+  return response.data.message;
 }

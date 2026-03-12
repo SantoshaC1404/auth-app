@@ -66,9 +66,23 @@ security:
     cookie-same-site: ${JWT_COOKIE_SAME_SITE:lax}
     cookie-domain: ${JWT_COOKIE_DOMAIN}
 
+  # Mail configuration (Gmail example — use App Password, not your real password)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 # Front end URL configuration
 app:
   auth:
     frontend:
       success-redirect: http://localhost:5173/auth/success
       failure-redirect: http://localhost:5173/auth/failure
+

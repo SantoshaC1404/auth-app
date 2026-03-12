@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import { loginUser, registerUser, logoutUser } from "@/services/auth.service";
+import {
+  loginUser,
+  registerUser,
+  logoutUser,
+  forgotPassword,
+  resetPassword,
+} from "@/services/auth.service";
 import type { LoginRequest, RegisterRequest } from "@/models/auth.model";
 
 // ─── useLogin ─────────────────────────────────────────────────────────────────
@@ -77,4 +83,51 @@ export function useLogout() {
   };
 
   return { logout, isLoading };
+}
+
+// ─── useForgotPassword ────────────────────────────────────────────────────────
+
+export function useForgotPassword() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const submitForgotPassword = async (email: string) => {
+    setIsLoading(true);
+    try {
+      await forgotPassword(email);
+      setSubmitted(true);
+    } catch {
+      // Always show success to prevent user enumeration — matches backend behaviour
+      setSubmitted(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { submitForgotPassword, isLoading, submitted };
+}
+
+// ─── useResetPassword ─────────────────────────────────────────────────────────
+
+export function useResetPassword() {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const submitResetPassword = async (token: string, newPassword: string) => {
+    setIsLoading(true);
+    try {
+      await resetPassword(token, newPassword);
+      toast.success("Password reset successfully! Please log in.");
+      navigate("/login");
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message ||
+        "Invalid or expired reset link. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { submitResetPassword, isLoading };
 }
