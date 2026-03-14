@@ -31,3 +31,13 @@ export const resetPasswordApi = (token: string, newPassword: string) =>
     token,
     newPassword,
   });
+
+/** POST /users/change-password — requires Bearer token */
+export const changePasswordApi = (
+  currentPassword: string,
+  newPassword: string,
+) =>
+  api.post<{ message: string }>("/users/change-password", {
+    currentPassword,
+    newPassword,
+  });

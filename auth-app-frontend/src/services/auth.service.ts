@@ -5,6 +5,7 @@ import {
   logoutApi,
   forgotPasswordApi,
   resetPasswordApi,
+  changePasswordApi,
 } from "@/api/auth.api";
 import { useAuthStore } from "@/store/auth.store";
 import type {
@@ -87,5 +88,13 @@ export async function resetPassword(
   newPassword: string,
 ): Promise<string> {
   const response = await resetPasswordApi(token, newPassword);
+  return response.data.message;
+}
+
+export async function changePassword(
+  currentPassword: string,
+  newPassword: string,
+): Promise<string> {
+  const response = await changePasswordApi(currentPassword, newPassword);
   return response.data.message;
 }

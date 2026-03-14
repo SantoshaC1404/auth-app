@@ -9,6 +9,19 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
+  # Mail configuration (Gmail example — use App Password, not your real password)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 #    hikari:
 #      pool-name: HikariCP
 #      maximum-pool-size: 5
@@ -66,23 +79,12 @@ security:
     cookie-same-site: ${JWT_COOKIE_SAME_SITE:lax}
     cookie-domain: ${JWT_COOKIE_DOMAIN}
 
-  # Mail configuration (Gmail example — use App Password, not your real password)
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
 # Front end URL configuration
 app:
   auth:
     frontend:
       success-redirect: http://localhost:5173/auth/success
       failure-redirect: http://localhost:5173/auth/failure
+      # reset-password-url: http://localhost:5173/reset-password
+      login-url: http://localhost:5173/login
 

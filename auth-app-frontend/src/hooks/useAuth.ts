@@ -8,6 +8,7 @@ import {
   logoutUser,
   forgotPassword,
   resetPassword,
+  changePassword,
 } from "@/services/auth.service";
 import type { LoginRequest, RegisterRequest } from "@/models/auth.model";
 
@@ -130,4 +131,33 @@ export function useResetPassword() {
   };
 
   return { submitResetPassword, isLoading };
+}
+
+// ─── useChangePassword ────────────────────────────────────────────────────────
+
+export function useChangePassword() {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const submitChangePassword = async (
+    currentPassword: string,
+    newPassword: string,
+  ) => {
+    setIsLoading(true);
+    try {
+      await changePassword(currentPassword, newPassword);
+      await logoutUser();
+      toast.success("Password changed successfully!");
+      navigate("/login");
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message ||
+        "Failed to change password. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { submitChangePassword, isLoading };
 }

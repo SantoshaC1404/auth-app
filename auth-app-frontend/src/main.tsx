@@ -13,6 +13,8 @@ import { Toaster } from "react-hot-toast";
 import OAuthSuccess from "./pages/OAuthSuccess.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import PublicRoute from "./components/PublicRoute.tsx";
+import ChangePassword from "./pages/ChangePassword.tsx";
+import ForgotPassword from "./pages/ForgotPassword.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
@@ -30,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
           <Route element={<PublicRoute />}>
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
           </Route>
 
           {/* Protected: redirect to /login if not logged in */}
@@ -37,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="about" element={<About />} />
             <Route path="services" element={<Services />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
         </Route>
       </Routes>

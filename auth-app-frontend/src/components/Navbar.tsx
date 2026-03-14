@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { LogOut, LayoutDashboard, Menu } from "lucide-react";
+import { LogOut, LayoutDashboard, Menu, KeyRound } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { ThemeToggle } from "./theme-toggle";
 import { useAuthStore } from "@/store/auth.store";
@@ -67,6 +67,15 @@ const ProfileMenu = () => {
               Dashboard
             </NavLink>
 
+            <NavLink
+              to="/change-password"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+            >
+              <KeyRound size={15} />
+              Change Password
+            </NavLink>
+
             <button
               onClick={() => {
                 setOpen(false);
@@ -118,7 +127,7 @@ const Navbar = () => {
           )}
         </NavLink>
 
-        {/* About + Services — only when logged in */}
+        {/* About & Services — only when logged in */}
         {isAuthenticated && (
           <>
             <NavLink to="/about">
@@ -146,7 +155,7 @@ const Navbar = () => {
           </>
         )}
 
-        {/* Login + Signup — only when logged out */}
+        {/* Login & Signup — only when logged out */}
         {!isAuthenticated && (
           <>
             <NavLink to="/login">
