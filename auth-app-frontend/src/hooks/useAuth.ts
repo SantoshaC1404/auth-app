@@ -6,7 +6,8 @@ import {
   loginUser,
   registerUser,
   logoutUser,
-  forgotPassword,
+  sendForgotPasswordOtp,
+  verifyOtp,
   resetPassword,
   changePassword,
 } from "@/services/auth.service";
@@ -87,50 +88,69 @@ export function useLogout() {
 }
 
 // ─── useForgotPassword ────────────────────────────────────────────────────────
+// 3-step flow: email → OTP → new password
+
+export type ForgotStep = "email" | "otp" | "password";
 
 export function useForgotPassword() {
+  const [step, setStep] = useState<ForgotStep>("email");
   const [isLoading, setIsLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const submitForgotPassword = async (email: string) => {
-    setIsLoading(true);
-    try {
-      await forgotPassword(email);
-      setSubmitted(true);
-    } catch {
-      // Always show success to prevent user enumeration — matches backend behaviour
-      setSubmitted(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return { submitForgotPassword, isLoading, submitted };
-}
-
-// ─── useResetPassword ─────────────────────────────────────────────────────────
-
-export function useResetPassword() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [resetToken, setResetToken] = useState("");
   const navigate = useNavigate();
 
-  const submitResetPassword = async (token: string, newPassword: string) => {
+  // Step 1 — send OTP
+  const submitEmail = async (emailValue: string) => {
     setIsLoading(true);
     try {
-      await resetPassword(token, newPassword);
-      toast.success("Password reset successfully! Please log in.");
-      navigate("/login");
+      await sendForgotPasswordOtp(emailValue);
+      setEmail(emailValue);
+      setStep("otp");
+      toast.success("OTP sent! Check your inbox.");
     } catch (err: any) {
       const message =
         err?.response?.data?.message ||
-        "Invalid or expired reset link. Please try again.";
+        err?.response?.data?.error ||
+        "Failed to send OTP. Please try again.";
       toast.error(message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { submitResetPassword, isLoading };
+  // Step 2 — verify OTP
+  const submitOtp = async (otp: string) => {
+    setIsLoading(true);
+    try {
+      const response = await verifyOtp(email, otp);
+      setResetToken(response.resetToken);
+      setStep("password");
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message || "Invalid OTP. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Step 3 — reset password
+  const submitNewPassword = async (newPassword: string) => {
+    setIsLoading(true);
+    try {
+      await resetPassword(resetToken, newPassword);
+      toast.success("Password reset! Please log in.");
+      navigate("/login");
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message || "Failed to reset password.";
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { step, isLoading, email, submitEmail, submitOtp, submitNewPassword };
 }
 
 // ─── useChangePassword ────────────────────────────────────────────────────────
@@ -147,7 +167,7 @@ export function useChangePassword() {
     try {
       await changePassword(currentPassword, newPassword);
       await logoutUser();
-      toast.success("Password changed successfully!");
+      toast.success("Password changed! Please log in again.");
       navigate("/login");
     } catch (err: any) {
       const message =

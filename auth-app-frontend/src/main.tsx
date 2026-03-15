@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import PublicRoute from "./components/PublicRoute.tsx";
 import ChangePassword from "./pages/ChangePassword.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
+import SessionGuard from "./components/SessionGuard.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
@@ -22,28 +23,31 @@ createRoot(document.getElementById("root")!).render(
       {/* Global Toast Container */}
       <Toaster position="top-right" reverseOrder={false} />
 
-      <Routes>
-        <Route path="/" element={<RootLayout />}>
-          {/* Always accessible */}
-          <Route index element={<App />} />
-          <Route path="auth/success" element={<OAuthSuccess />} />
+      {/* Validates session on every app boot before rendering routes */}
+      <SessionGuard>
+        <Routes>
+          <Route path="/" element={<RootLayout />}>
+            {/* Always accessible */}
+            <Route index element={<App />} />
+            <Route path="auth/success" element={<OAuthSuccess />} />
 
-          {/* Guest-only: redirect to /dashboard if already logged in */}
-          <Route element={<PublicRoute />}>
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="forgot-password" element={<ForgotPassword />} />
-          </Route>
+            {/* Guest-only: redirect to /dashboard if already logged in */}
+            <Route element={<PublicRoute />}>
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+            </Route>
 
-          {/* Protected: redirect to /login if not logged in */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="about" element={<About />} />
-            <Route path="services" element={<Services />} />
-            <Route path="change-password" element={<ChangePassword />} />
+            {/* Protected: redirect to /login if not logged in */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="about" element={<About />} />
+              <Route path="services" element={<Services />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </SessionGuard>
     </BrowserRouter>
   </ThemeProvider>,
 );

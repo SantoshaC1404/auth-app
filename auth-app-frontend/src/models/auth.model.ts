@@ -54,3 +54,10 @@ export interface AuthUser {
   image?: string;
   roles: string[];
 }
+
+// ─── OTP / Password Reset flow ────────────────────────────────────────────────
+
+export interface VerifyOtpResponse {
+  resetToken: string;
+  message: string;
+}

@@ -18,8 +18,17 @@ public class PasswordResetToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String token;
+    /**
+     * 6-digit OTP sent to the user's email
+     */
+    @Column(nullable = false)
+    private String otp;
+
+    /**
+     * Short-lived session token returned to frontend after OTP verification
+     */
+    @Column(unique = true)
+    private String resetToken;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

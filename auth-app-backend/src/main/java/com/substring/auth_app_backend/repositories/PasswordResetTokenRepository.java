@@ -9,7 +9,15 @@ import java.util.Optional;
 
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long> {
 
-    Optional<PasswordResetToken> findByToken(String token);
+    /**
+     * Find by the reset token (issued after OTP verification)
+     */
+    Optional<PasswordResetToken> findByResetToken(String resetToken);
+
+    /**
+     * Find latest active OTP entry for a user
+     */
+    Optional<PasswordResetToken> findTopByUserEmailOrderByIdDesc(String email);
 
     @Modifying
     @Query("DELETE FROM PasswordResetToken t WHERE t.user.id = :userId")
