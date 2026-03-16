@@ -1,23 +1,32 @@
-# Project Title
+# auth-app
 
-## Description
-A brief description of the project goes here. Explain the purpose and functionality of your application.
+Authentication App Using Spring Boot and React
+
+## Overview
+A full-stack authentication application built with Spring Boot backend and React frontend, featuring secure user authentication, password management, and role-based access control.
 
 ## Features
-- Feature 1
-- Feature 2
-- Feature 3
+- ✅ User Registration & Login
+- ✅ Password Change & Reset Functionality
+- ✅ Secure JWT Token-Based Authentication
+- ✅ Role-Based Access Control (RBAC)
+- ✅ Email Verification
+- ✅ Session Management
+- ✅ Responsive UI
 
 ## Tech Stack
-- Language: JavaScript
-- Framework: React
-- Other Technologies: Node.js, Express, MongoDB
 
-## Setup Instructions
-1. Clone the repository using `git clone <url>`.
-2. Navigate to the project directory.
-3. Install dependencies using `npm install`.
-4. Start the application using `npm start`.
+### Backend
+- **Framework**: Spring Boot 3.x
+- **Security**: Spring Security with JWT
+- **Database**: MySQL/PostgreSQL
+- **Build Tool**: Maven
 
-## Usage
-Provide instructions on how to use the application, including any API endpoints, command-line instructions, etc.
+### Frontend
+- **Framework**: React 18+
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Styling**: CSS/Tailwind CSS
+- **State Management**: Context API / Redux
+
+## Project Structure
