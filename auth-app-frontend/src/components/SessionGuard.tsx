@@ -1,36 +1,77 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/store/auth.store";
-import { refreshSession } from "@/services/auth.service";
+import { refreshSession, logoutUser } from "@/services/auth.service";
+import toast from "react-hot-toast";
+
+const IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes of inactivity
+const ACTIVITY_EVENTS = [
+  "mousemove",
+  "mousedown",
+  "keydown",
+  "scroll",
+  "touchstart",
+  "click",
+];
 
 /**
- * Runs once on app boot.
- * - If the user appears logged in (Zustand persisted state), silently validate
- *   the session by calling /auth/refresh-token using the HttpOnly cookie.
- * - If the cookie is expired or missing, clear the store and let the user log in.
- * - Renders children only after the check completes so routes don't flicker.
+ * SessionGuard does two things:
+ *
+ * 1. On app boot — validates the session via /auth/refresh-token.
+ *    If the cookie is expired, clears the store.
+ *
+ * 2. While logged in — starts an idle timer. If the user has no activity
+ *    for IDLE_TIMEOUT_MS, they are automatically logged out.
+ *    Any user activity resets the timer.
  */
 const SessionGuard = ({ children }: { children: React.ReactNode }) => {
   const [checking, setChecking] = useState(true);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const logout = useAuthStore((s) => s.logout);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ─── Boot: validate session ───────────────────────────────────────────────
 
   useEffect(() => {
     if (!isAuthenticated) {
-      // Not logged in — nothing to validate
       setChecking(false);
       return;
     }
 
-    // Validate the session against the backend
     refreshSession()
-      .catch(() => {
-        // Cookie expired or revoked — wipe local state
+      .catch(() => logout())
+      .finally(() => setChecking(false));
+  }, []);
+
+  // ─── Idle timeout ─────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const handleLogout = async () => {
+      try {
+        await logoutUser();
+      } catch {
         logout();
-      })
-      .finally(() => {
-        setChecking(false);
-      });
-  }, []); // Run once on mount only
+      }
+      toast("Logged out due to inactivity.", { icon: "🔒" });
+    };
+
+    const resetTimer = () => {
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+      idleTimer.current = setTimeout(handleLogout, IDLE_TIMEOUT_MS);
+    };
+
+    // Start timer and attach activity listeners
+    resetTimer();
+    ACTIVITY_EVENTS.forEach((e) => window.addEventListener(e, resetTimer));
+
+    return () => {
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+      ACTIVITY_EVENTS.forEach((e) => window.removeEventListener(e, resetTimer));
+    };
+  }, [isAuthenticated]);
+
+  // ─── Render ───────────────────────────────────────────────────────────────
 
   if (checking) {
     return (
