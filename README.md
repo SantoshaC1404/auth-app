@@ -14,6 +14,20 @@ A full-stack authentication application built with Spring Boot backend and React
 - ✅ Session Management
 - ✅ Responsive UI
 
+## Screenshots
+
+### Login Page
+![Login Page](./images/login-page.png)
+
+### Registration Page
+![Registration Page](./images/register-page.png)
+
+### Dashboard
+![Dashboard](./images/dashboard.png)
+
+### Password Change
+![Password Change](./images/password-change.png)
+
 ## Tech Stack
 
 ### Backend
@@ -27,6 +41,5 @@ A full-stack authentication application built with Spring Boot backend and React
 - **Language**: TypeScript
 - **Build Tool**: Vite
 - **Styling**: CSS/Tailwind CSS
-- **State Management**: Context API / Redux
 
 ## Project Structure
