@@ -101,7 +101,7 @@ const Navbar = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   return (
-    <nav className="fixed top-0 left-0 w-full h-14 flex items-center justify-between px-6 md:px-10 dark:bg-gray-800 bg-white shadow-sm z-50">
+    <nav className="fixed top-0 left-0 w-full h-14 flex items-center justify-between px-6 md:px-10 bg-background border-b border-border z-50">
       {/* Brand */}
       <div className="font-bold flex items-center gap-2">
         <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-gradient-to-r from-primary to-primary/40 text-white text-xs">
@@ -198,7 +198,7 @@ const Navbar = () => {
 
       {/* Mobile slide-down */}
       {mobileOpen && (
-        <div className="absolute top-14 left-0 w-full bg-white dark:bg-gray-800 shadow-md flex flex-col items-center gap-3 py-6 md:hidden">
+        <div className="absolute top-14 left-0 w-full bg-background border-b border-border flex flex-col items-center gap-3 py-6 md:hidden">
           <NavLink to="/" end onClick={() => setMobileOpen(false)}>
             {({ isActive }) => (
               <Button

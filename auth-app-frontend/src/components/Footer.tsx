@@ -5,7 +5,7 @@ const Footer = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   return (
-    <footer className="mt-16 border-t bg-white dark:bg-gray-800 w-full">
+    <footer className="mt-16 border-t bg-background w-full">
       <div className="px-6 md:px-10 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
         {/* Brand */}
         <div className="space-y-2">

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Eye, EyeOff, Mail, ShieldCheck, KeyRound } from "lucide-react";
+import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,8 +18,6 @@ import {
 } from "@/components/ui/card";
 import { useForgotPassword } from "@/hooks/useAuth";
 import toast from "react-hot-toast";
-
-// ─── Schemas ──────────────────────────────────────────────────────────────────
 
 const emailSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -45,8 +44,6 @@ type EmailForm = z.infer<typeof emailSchema>;
 type OtpForm = z.infer<typeof otpSchema>;
 type PasswordForm = z.infer<typeof passwordSchema>;
 
-// ─── Step indicator ───────────────────────────────────────────────────────────
-
 const steps = [
   { icon: Mail, label: "Email" },
   { icon: ShieldCheck, label: "Verify OTP" },
@@ -63,13 +60,7 @@ const StepIndicator = ({ current }: { current: number }) => (
         <div key={s.label} className="flex items-center gap-2">
           <div
             className={`flex items-center justify-center h-8 w-8 rounded-full text-xs font-bold transition-colors
-              ${
-                done
-                  ? "bg-primary text-primary-foreground"
-                  : active
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground"
-              }`}
+              ${done || active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
           >
             {done ? "✓" : <Icon size={14} />}
           </div>
@@ -83,8 +74,6 @@ const StepIndicator = ({ current }: { current: number }) => (
     })}
   </div>
 );
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 const ForgotPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -110,200 +99,222 @@ const ForgotPassword = () => {
     exit: { opacity: 0, x: -30 },
   };
 
+  const labelStyle = {
+    fontSize: "12px",
+    fontWeight: 500,
+  } as React.CSSProperties;
+
   return (
-    <div className="flex items-center justify-center min-h-full px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Forgot Password</CardTitle>
-            <CardDescription>
-              {step === "email" && "Enter your email to receive an OTP."}
-              {step === "otp" && `Enter the 6-digit OTP sent to ${email}`}
-              {step === "password" && "Choose a new password for your account."}
-            </CardDescription>
-          </CardHeader>
+    <>
+      <div className="flex items-center justify-center min-h-full px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Forgot Password</CardTitle>
+              <CardDescription>
+                {step === "email" && "Enter your email to receive an OTP."}
+                {step === "otp" && `Enter the 6-digit OTP sent to ${email}`}
+                {step === "password" &&
+                  "Choose a new password for your account."}
+              </CardDescription>
+            </CardHeader>
 
-          <CardContent>
-            <StepIndicator current={stepIndex} />
+            <CardContent>
+              <StepIndicator current={stepIndex} />
 
-            <AnimatePresence mode="wait">
-              {/* ── Step 1: Email ── */}
-              {step === "email" && (
-                <motion.form
-                  key="email"
-                  variants={slideVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  onSubmit={emailForm.handleSubmit((d) => submitEmail(d.email))}
-                  className="space-y-4"
-                >
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input
-                      type="email"
-                      placeholder="example@email.com"
-                      {...emailForm.register("email")}
-                      className={
-                        emailForm.formState.errors.email ? "border-red-500" : ""
-                      }
-                    />
-                    {emailForm.formState.errors.email && (
-                      <p className="text-sm text-red-500">
-                        {emailForm.formState.errors.email.message}
-                      </p>
+              <AnimatePresence mode="wait">
+                {/* Step 1: Email */}
+                {step === "email" && (
+                  <motion.form
+                    key="email"
+                    variants={slideVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    onSubmit={emailForm.handleSubmit(
+                      (d) => submitEmail(d.email),
+                      (errs) => {
+                        const first = Object.values(errs)[0] as any;
+                        if (first?.message) toast.error(first.message);
+                      },
                     )}
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full cursor-pointer"
-                    disabled={isLoading}
+                    className="space-y-4"
                   >
-                    {isLoading ? "Sending OTP..." : "Send OTP"}
-                  </Button>
+                    <div className="space-y-2">
+                      <Label style={labelStyle}>
+                        Email <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                          <HiOutlineMail size={16} />
+                        </span>
+                        <Input
+                          type="email"
+                          placeholder="example@email.com"
+                          {...emailForm.register("email")}
+                          className={`pl-9 ${emailForm.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                        />
+                      </div>
+                    </div>
 
-                  <p className="text-sm text-center text-muted-foreground">
-                    Remember your password?{" "}
-                    <Link
-                      to="/login"
-                      className="text-primary font-medium hover:underline"
-                    >
-                      Back to Login
-                    </Link>
-                  </p>
-                </motion.form>
-              )}
-
-              {/* ── Step 2: OTP ── */}
-              {step === "otp" && (
-                <motion.form
-                  key="otp"
-                  variants={slideVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  onSubmit={otpForm.handleSubmit((d) => submitOtp(d.otp))}
-                  className="space-y-4"
-                >
-                  <div className="space-y-2">
-                    <Label>One-Time Password</Label>
-                    <Input
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={6}
-                      placeholder="Enter 6-digit OTP"
-                      {...otpForm.register("otp")}
-                      className={`tracking-[0.5em] text-center text-lg font-bold ${
-                        otpForm.formState.errors.otp ? "border-red-500" : ""
-                      }`}
-                    />
-                    {otpForm.formState.errors.otp && (
-                      <p className="text-sm text-red-500">
-                        {otpForm.formState.errors.otp.message}
-                      </p>
-                    )}
-                    <p className="text-xs text-muted-foreground text-center">
-                      OTP expires in 10 minutes
-                    </p>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full cursor-pointer"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Verifying..." : "Verify OTP"}
-                  </Button>
-
-                  <p className="text-sm text-center text-muted-foreground">
-                    Didn't receive it?{" "}
-                    <button
-                      type="button"
-                      onClick={() => submitEmail(email)}
-                      className="text-primary font-medium hover:underline"
+                    <Button
+                      type="submit"
+                      className="w-full cursor-pointer"
                       disabled={isLoading}
                     >
-                      Resend OTP
-                    </button>
-                  </p>
-                </motion.form>
-              )}
+                      {isLoading ? "Sending OTP..." : "Send OTP"}
+                    </Button>
 
-              {/* ── Step 3: New Password ── */}
-              {step === "password" && (
-                <motion.form
-                  key="password"
-                  variants={slideVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  onSubmit={passwordForm.handleSubmit(
-                    (d) => submitNewPassword(d.newPassword),
-                    onPasswordError,
-                  )}
-                  className="space-y-4"
-                >
-                  <div className="space-y-2">
-                    <Label>New Password</Label>
-                    <div className="relative">
+                    <p className="text-sm text-center text-muted-foreground">
+                      Remember your password?{" "}
+                      <Link
+                        to="/login"
+                        className="text-primary font-medium hover:underline"
+                      >
+                        Back to Login
+                      </Link>
+                    </p>
+                  </motion.form>
+                )}
+
+                {/* Step 2: OTP */}
+                {step === "otp" && (
+                  <motion.form
+                    key="otp"
+                    variants={slideVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    onSubmit={otpForm.handleSubmit(
+                      (d) => submitOtp(d.otp),
+                      (errs) => {
+                        const first = Object.values(errs)[0] as any;
+                        if (first?.message) toast.error(first.message);
+                      },
+                    )}
+                    className="space-y-4"
+                  >
+                    <div className="space-y-2">
+                      <Label style={labelStyle}>
+                        One-Time Password{" "}
+                        <span className="text-red-500">*</span>
+                      </Label>
                       <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter new password"
-                        {...passwordForm.register("newPassword")}
-                        className={
-                          passwordForm.formState.errors.newPassword
-                            ? "border-red-500"
-                            : ""
-                        }
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={6}
+                        placeholder="000000"
+                        {...otpForm.register("otp")}
+                        className={`tracking-[0.5em] text-center text-lg font-bold ${
+                          otpForm.formState.errors.otp ? "border-red-500" : ""
+                        }`}
                       />
+                      <p className="text-xs text-muted-foreground text-center">
+                        OTP expires in 10 minutes
+                      </p>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full cursor-pointer"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Verifying..." : "Verify OTP"}
+                    </Button>
+
+                    <p className="text-sm text-center text-muted-foreground">
+                      Didn't receive it?{" "}
                       <button
                         type="button"
-                        onClick={() => setShowPassword((v) => !v)}
-                        className="absolute right-3 top-2.5 text-muted-foreground"
+                        onClick={() => submitEmail(email)}
+                        className="text-primary font-medium hover:underline"
+                        disabled={isLoading}
                       >
-                        {showPassword ? (
-                          <EyeOff size={18} />
-                        ) : (
-                          <Eye size={18} />
-                        )}
+                        Resend OTP
                       </button>
-                    </div>
-                  </div>
+                    </p>
+                  </motion.form>
+                )}
 
-                  <div className="space-y-2">
-                    <Label>Confirm Password</Label>
-                    <Input
-                      type="password"
-                      placeholder="Confirm new password"
-                      {...passwordForm.register("confirmPassword")}
-                      className={
-                        passwordForm.formState.errors.confirmPassword
-                          ? "border-red-500"
-                          : ""
-                      }
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full cursor-pointer"
-                    disabled={isLoading}
+                {/* Step 3: New Password */}
+                {step === "password" && (
+                  <motion.form
+                    key="password"
+                    variants={slideVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    onSubmit={passwordForm.handleSubmit(
+                      (d) => submitNewPassword(d.newPassword),
+                      onPasswordError,
+                    )}
+                    className="space-y-4"
                   >
-                    {isLoading ? "Resetting..." : "Reset Password"}
-                  </Button>
-                </motion.form>
-              )}
-            </AnimatePresence>
-          </CardContent>
-        </Card>
-      </motion.div>
-    </div>
+                    <div className="space-y-2">
+                      <Label style={labelStyle}>
+                        New Password <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                          <HiOutlineLockClosed size={16} />
+                        </span>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter new password"
+                          {...passwordForm.register("newPassword")}
+                          className={`pl-9 pr-10 ${passwordForm.formState.errors.newPassword ? "border-red-500" : ""}`}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((v) => !v)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {showPassword ? (
+                            <EyeOff size={16} />
+                          ) : (
+                            <Eye size={16} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label style={labelStyle}>
+                        Confirm Password <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                          <HiOutlineLockClosed size={16} />
+                        </span>
+                        <Input
+                          type="password"
+                          placeholder="Confirm new password"
+                          {...passwordForm.register("confirmPassword")}
+                          className={`pl-9 ${passwordForm.formState.errors.confirmPassword ? "border-red-500" : ""}`}
+                        />
+                      </div>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full cursor-pointer"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Resetting..." : "Reset Password"}
+                    </Button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+    </>
   );
 };
 
