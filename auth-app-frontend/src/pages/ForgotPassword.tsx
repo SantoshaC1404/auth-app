@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,41 @@ import {
 } from "@/components/ui/card";
 import { useForgotPassword } from "@/hooks/useAuth";
 import toast from "react-hot-toast";
+
+const OTP_SECONDS = 10 * 60; // 10 minutes
+
+function useOtpTimer(active: boolean) {
+  const [seconds, setSeconds] = useState(OTP_SECONDS);
+  const [expired, setExpired] = useState(false);
+
+  const reset = useCallback(() => {
+    setSeconds(OTP_SECONDS);
+    setExpired(false);
+  }, []);
+
+  useEffect(() => {
+    if (!active) return;
+    setSeconds(OTP_SECONDS);
+    setExpired(false);
+    const interval = setInterval(() => {
+      setSeconds((s) => {
+        if (s <= 1) {
+          clearInterval(interval);
+          setExpired(true);
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [active]);
+
+  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const ss = String(seconds % 60).padStart(2, "0");
+  const formatted = `${mm}:${ss}`;
+
+  return { formatted, expired, reset };
+}
 
 const emailSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -79,6 +114,11 @@ const ForgotPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { step, isLoading, email, submitEmail, submitOtp, submitNewPassword } =
     useForgotPassword();
+  const {
+    formatted: timerDisplay,
+    expired: otpExpired,
+    reset: resetTimer,
+  } = useOtpTimer(step === "otp");
 
   const stepIndex = step === "email" ? 0 : step === "otp" ? 1 : 2;
 
@@ -214,8 +254,12 @@ const ForgotPassword = () => {
                           otpForm.formState.errors.otp ? "border-red-500" : ""
                         }`}
                       />
-                      <p className="text-xs text-muted-foreground text-center">
-                        OTP expires in 10 minutes
+                      <p
+                        className={`text-xs text-center font-medium ${otpExpired ? "text-destructive" : "text-muted-foreground"}`}
+                      >
+                        {otpExpired
+                          ? "OTP expired — please resend"
+                          : `Expires in ${timerDisplay}`}
                       </p>
                     </div>
 
@@ -231,7 +275,10 @@ const ForgotPassword = () => {
                       Didn't receive it?{" "}
                       <button
                         type="button"
-                        onClick={() => submitEmail(email)}
+                        onClick={() => {
+                          submitEmail(email);
+                          resetTimer();
+                        }}
                         className="text-primary font-medium hover:underline"
                         disabled={isLoading}
                       >
