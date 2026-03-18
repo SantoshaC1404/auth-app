@@ -4,12 +4,12 @@ import Footer from "@/components/Footer";
 
 const RootLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       {/* Navbar */}
       <Navbar />
 
       {/* Page Content */}
-      <main className="flex-1 pt-20">
+      <main className="flex-1 flex flex-col pt-14">
         <Outlet />
       </main>
 

@@ -106,7 +106,7 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-full px-4">
+      <div className="auth-bg flex-1">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
