@@ -25,6 +25,10 @@ function toAuthUser(dto: UserDto): AuthUser {
     email: dto.email,
     image: dto.image,
     roles: dto.roles.map((r) => r.name),
+    provider: dto.provider,
+    createdAt: dto.createdAt,
+    updatedAt: dto.updatedAt,
+    loginAt: new Date().toISOString(), // stamped at login time
   };
 }
 

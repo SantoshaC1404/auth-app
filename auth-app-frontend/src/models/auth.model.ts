@@ -53,6 +53,10 @@ export interface AuthUser {
   email: string;
   image?: string;
   roles: string[];
+  provider: Provider;
+  createdAt: string; // ISO string — account created date
+  updatedAt: string; // ISO string — last profile/password update
+  loginAt: string; // ISO string — current login time (set client-side)
 }
 
 // ─── OTP / Password Reset flow ────────────────────────────────────────────────
