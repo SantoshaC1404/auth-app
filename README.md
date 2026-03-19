@@ -1,6 +1,6 @@
 <div align="center">
 
-#🔐 Auth App
+# 🔐 Auth App
 
 **A full-stack authentication system built with React 19 + Spring Boot 3**
 
@@ -40,7 +40,6 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 ### Authentication
 - **JWT Access Tokens** — short-lived, stateless, verified on every request
 - **Rotating Refresh Tokens** — stored in HttpOnly cookies, rotated on every use, revocable
-- **Silent Token Refresh** — Axios interceptor transparently refreshes on 401
 - **OAuth2 Social Login** — Google and GitHub via Spring Security OAuth2 Client
 - **OTP Password Reset** — 3-step flow: email → 6-digit OTP → new password
 - **Session Validation** — app validates session via cookie on every page load
@@ -71,34 +70,9 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 
 ## Tech Stack
 
-### Frontend
-| Tech | Version | Purpose |
-|------|---------|---------|
-| React | 19 | UI framework |
-| TypeScript | 5.9 | Type safety |
-| Vite | 7 | Build tool |
-| Tailwind CSS | 4 | Styling |
-| shadcn/ui | latest | Component library |
-| Zustand | 5 | Global state |
-| React Hook Form + Zod | 7 / 4 | Forms & validation |
-| Axios | 1.x | HTTP client |
-| Framer Motion | 12 | Animations |
-| React Router | 7 | Routing |
-| React Hot Toast | 2 | Notifications |
+**Frontend** — React · TypeScript · Vite · Tailwind CSS · shadcn/ui · Zustand · React Router · Axios · Zod · Framer Motion
 
-### Backend
-| Tech | Version | Purpose |
-|------|---------|---------|
-| Spring Boot | 3.5.9 | Application framework |
-| Spring Security | 6.5 | Auth & authorization |
-| Spring Data JPA | 3.x | Database ORM |
-| JJWT | 0.13.0 | JWT generation & validation |
-| Spring OAuth2 Client | 6.x | Google / GitHub login |
-| Spring Mail | 3.x | Email (SMTP) |
-| MySQL | 8 | Relational database |
-| ModelMapper | 3.2.4 | DTO ↔ Entity mapping |
-| Lombok | latest | Boilerplate reduction |
-| Springdoc OpenAPI | 2.8.14 | API docs |
+**Backend** — Spring Boot · Spring Security · Spring Data JPA · MySQL · JWT (JJWT) · OAuth2 · Spring Mail · Lombok · Swagger/OpenAPI
 
 ---
 
@@ -204,7 +178,7 @@ cd auth-app-backend
 ./mvnw spring-boot:run
 ```
 
-Backend starts at `http://localhost:8082`
+Backend starts at `http://localhost:8082`  
 Swagger UI: `http://localhost:8082/swagger-ui.html`
 
 ---
@@ -321,8 +295,6 @@ Each profile has its own `application-{profile}.yaml` for database, JWT, and mai
 - Token revocation on logout and account deletion
 - User enumeration prevention on forgot-password endpoint
 - Stateless session — no server-side HTTP sessions
-
----
 
 ---
 
