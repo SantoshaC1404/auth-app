@@ -52,14 +52,14 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 - Welcome email on registration
 - OTP email for forgot password
 
-### Frontend
+### 🖥️ Frontend
 - **Route Guards** — `ProtectedRoute` (login required) and `PublicRoute` (redirect if logged in)
 - **Dark / Light Theme** — system-aware toggle
 - **Responsive** — mobile drawer sidebar on dashboard, mobile-optimised forms
 - **Form Validation** — Zod schemas with React Hook Form, errors via toast
 - **DM Sans + DM Mono** typography throughout
 
-### Backend
+### ⚙️ Backend
 - **Layered Architecture** — Controller → Service → Repository (zero business logic in controllers)
 - **Spring Security Filter Chain** — stateless, JWT filter, OAuth2 client
 - **Global Exception Handler** — consistent error responses
@@ -68,11 +68,11 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 
 ---
 
-## Tech Stack
+## 🧱 Tech Stack
 
-**Frontend** — React · TypeScript · Vite · Tailwind CSS · shadcn/ui · Zustand · React Router · Axios · Zod · Framer Motion
+**Frontend** — React · Vite · Tailwind CSS · shadcn/ui · React Router · Framer Motion
 
-**Backend** — Spring Boot · Spring Security · Spring Data JPA · MySQL · JWT (JJWT) · OAuth2 · Spring Mail · Lombok · Swagger/OpenAPI
+**Backend** — Spring Boot · Spring Security · MySQL · JWT (JJWT) · OAuth2 · Spring Mail
 
 ---
 
