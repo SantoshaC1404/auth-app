@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="public/logo.svg" alt="Auth App Logo" width="64" height="64" />
-
-# Auth App
+#🔐 Auth App
 
 **A full-stack authentication system built with React 19 + Spring Boot 3**
 
@@ -10,7 +8,6 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.9-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 </div>
 
@@ -326,10 +323,6 @@ Each profile has its own `application-{profile}.yaml` for database, JWT, and mai
 - Stateless session — no server-side HTTP sessions
 
 ---
-
-## License
-
-[MIT](LICENSE)
 
 ---
 
