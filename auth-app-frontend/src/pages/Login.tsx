@@ -12,7 +12,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -120,11 +119,11 @@ const Login = () => {
                 </div>
 
                 {/* Remember + Forgot */}
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center justify-end text-sm">
+                  {/* <div className="flex items-center gap-2">
                     <Checkbox />
                     <span>Remember me</span>
-                  </div>
+                  </div> */}
                   <Link
                     to="/forgot-password"
                     className="text-primary hover:underline"
@@ -135,7 +134,7 @@ const Login = () => {
 
                 <Button
                   type="submit"
-                  className="w-full cursor-pointer"
+                  className="w-full cursor-pointer hover:bg-gray-400"
                   disabled={isLoading}
                 >
                   {isLoading ? "Logging in..." : "Login"}

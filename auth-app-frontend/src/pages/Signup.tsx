@@ -107,11 +107,6 @@ const Signup = () => {
                       className={`pl-9 ${errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                     />
                   </div>
-                  {/* {errors.name && (
-                    <p className="text-sm text-red-500">
-                      {errors.name.message}
-                    </p>
-                  )} */}
                 </div>
 
                 {/* Email */}
@@ -130,11 +125,6 @@ const Signup = () => {
                       className={`pl-9 ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                     />
                   </div>
-                  {/* {errors.email && (
-                    <p className="text-sm text-red-500">
-                      {errors.email.message}
-                    </p>
-                  )} */}
                 </div>
 
                 {/* Password */}
@@ -160,11 +150,6 @@ const Signup = () => {
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  {/* {errors.password && (
-                    <p className="text-sm text-red-500">
-                      {errors.password.message}
-                    </p>
-                  )} */}
                 </div>
 
                 {/* Confirm Password */}
@@ -183,16 +168,11 @@ const Signup = () => {
                       className={`pl-9 ${errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                     />
                   </div>
-                  {/* {errors.confirmPassword && (
-                    <p className="text-sm text-red-500">
-                      {errors.confirmPassword.message}
-                    </p>
-                  )} */}
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full cursor-pointer"
+                  className="w-full cursor-pointer hover:bg-gray-400"
                   disabled={isLoading}
                 >
                   {isLoading ? "Creating account..." : "Sign Up"}
