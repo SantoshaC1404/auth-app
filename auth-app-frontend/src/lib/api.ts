@@ -74,7 +74,7 @@ api.interceptors.response.use(
           image: data.userDto.image,
           roles: data.userDto.roles.map((r: { name: string }) => r.name),
         },
-        newToken
+        newToken,
       );
 
       // Drain queue
@@ -93,5 +93,5 @@ api.interceptors.response.use(
     } finally {
       refreshing = false;
     }
-  }
+  },
 );
