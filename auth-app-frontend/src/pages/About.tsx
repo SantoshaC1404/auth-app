@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Code2, BookOpen, Shield, Heart } from "lucide-react";
+import { Code2, BookOpen, Shield, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -70,9 +70,8 @@ const About = () => {
         >
           <h2 className="text-3xl font-bold mb-4">The Goal</h2>
           <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Most tutorials cover only the basics of authentication. This project
-            goes further — implementing rotating refresh tokens, token
-            revocation, silent re-authentication, role-based route guards,
+            This project goes further — implementing rotating refresh tokens,
+            token revocation, silent re-authentication, role-based route guards,
             OAuth2 social login, and a layered frontend architecture that
             mirrors what you'd find in a production codebase.
           </p>

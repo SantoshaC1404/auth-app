@@ -135,8 +135,8 @@ const Services = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { label: "React 19", sub: "Frontend" },
-              { label: "Spring Boot 3", sub: "Backend" },
+              { label: "React JS", sub: "Frontend" },
+              { label: "Spring Boot", sub: "Backend" },
               { label: "JWT / JJWT", sub: "Tokens" },
               { label: "MySQL", sub: "Database" },
               { label: "Zustand", sub: "State" },
@@ -160,7 +160,7 @@ const Services = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-24 text-center px-6">
+      {/* <section className="py-24 text-center px-6">
         <motion.h2
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -174,7 +174,7 @@ const Services = () => {
             <Button size="lg">Create Your Account</Button>
           </Link>
         </motion.div>
-      </section>
+      </section> */}
     </div>
   );
 };
