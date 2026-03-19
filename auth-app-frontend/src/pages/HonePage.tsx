@@ -18,7 +18,7 @@ const item = {
 
 const HomePage = () => {
   return (
-    <div className="overflow-x-hidden pt-2">
+    <div className="overflow-x-hidden pt-4">
       {/* HERO SECTION */}
       <section className="min-h-[calc(80vh-5rem)] flex flex-col justify-center items-center text-center px-4 sm:px-4 py-10 sm:py-0 bg-gradient-to-b from-background to-muted">
         {" "}

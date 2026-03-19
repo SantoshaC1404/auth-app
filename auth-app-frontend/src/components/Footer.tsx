@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="px-6 md:px-10 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
         {/* Brand */}
         <div className="space-y-2">
-          <div className="flex items-center gap-2 font-bold">
+          <div className="flex items-center justify-center gap-2 font-bold">
             <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-gradient-to-r from-primary to-primary/40 text-white text-xs">
               A
             </span>
