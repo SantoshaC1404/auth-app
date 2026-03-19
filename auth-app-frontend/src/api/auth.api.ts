@@ -46,3 +46,7 @@ export const changePasswordApi = (
     currentPassword,
     newPassword,
   });
+
+/** DELETE /users/me — deletes authenticated user's account */
+export const deleteAccountApi = () =>
+  api.delete<{ message: string }>("/users/me");

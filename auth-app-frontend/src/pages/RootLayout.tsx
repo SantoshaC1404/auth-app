@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 // Only these routes use the sidebar layout (no Navbar/Footer)
-const SIDEBAR_ROUTES = ["/dashboard", "/change-password"];
+const SIDEBAR_ROUTES = ["/dashboard", "/change-password", "/delete-account"];
 
 const RootLayout = () => {
   const { pathname } = useLocation();

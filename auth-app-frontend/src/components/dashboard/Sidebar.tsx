@@ -6,6 +6,7 @@ import {
   LogOut,
   ShieldCheck,
   Layers,
+  Trash2,
   Menu,
   X,
 } from "lucide-react";
@@ -17,6 +18,7 @@ const navItems = [
   { to: "/change-password", icon: KeyRound, label: "Change Password" },
   { to: "/about", icon: ShieldCheck, label: "About" },
   { to: "/services", icon: Layers, label: "Services" },
+  { to: "/delete-account", icon: Trash2, label: "Delete Account" },
   { to: "/logout", icon: LogOut, label: "Logout" },
 ];
 
@@ -26,7 +28,7 @@ const navLinkClass =
     `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
       isActive
         ? "bg-primary text-primary-foreground"
-        : label === "Logout"
+        : label === "Logout" || label === "Delete Account"
           ? "text-destructive hover:bg-destructive/10 hover:text-destructive"
           : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
     }`;

@@ -7,6 +7,7 @@ import {
   verifyOtpApi,
   resetPasswordApi,
   changePasswordApi,
+  deleteAccountApi,
 } from "@/api/auth.api";
 import { useAuthStore } from "@/store/auth.store";
 import type {
@@ -90,4 +91,9 @@ export async function changePassword(
 ): Promise<string> {
   const response = await changePasswordApi(currentPassword, newPassword);
   return response.data.message;
+}
+
+export async function deleteAccount(): Promise<void> {
+  await deleteAccountApi();
+  useAuthStore.getState().logout();
 }

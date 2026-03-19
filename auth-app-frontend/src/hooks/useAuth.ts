@@ -10,6 +10,7 @@ import {
   verifyOtp,
   resetPassword,
   changePassword,
+  deleteAccount,
 } from "@/services/auth.service";
 import type { LoginRequest, RegisterRequest } from "@/models/auth.model";
 
@@ -180,4 +181,28 @@ export function useChangePassword() {
   };
 
   return { submitChangePassword, isLoading };
+}
+
+// ─── useDeleteAccount ─────────────────────────────────────────────────────────
+
+export function useDeleteAccount() {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const submitDeleteAccount = async () => {
+    setIsLoading(true);
+    try {
+      await deleteAccount();
+      toast.success("Account deleted successfully.");
+      navigate("/login");
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message || "Failed to delete account.";
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { submitDeleteAccount, isLoading };
 }

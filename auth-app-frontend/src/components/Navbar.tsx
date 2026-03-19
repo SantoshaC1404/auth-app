@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { LogOut, LayoutDashboard, Menu, KeyRound } from "lucide-react";
+import { LogOut, LayoutDashboard, Menu, KeyRound, Trash2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { ThemeToggle } from "./theme-toggle";
 import { useAuthStore } from "@/store/auth.store";
@@ -74,6 +74,15 @@ const ProfileMenu = () => {
             >
               <KeyRound size={15} />
               Change Password
+            </NavLink>
+
+            <NavLink
+              to="/delete-account"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <Trash2 size={15} />
+              Delete Account
             </NavLink>
 
             <button

@@ -16,6 +16,7 @@ import PublicRoute from "./components/PublicRoute.tsx";
 import ChangePassword from "./pages/ChangePassword.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import SessionGuard from "./components/SessionGuard.tsx";
+import DeleteAccount from "./pages/DeleteAccount.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
@@ -44,6 +45,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="about" element={<About />} />
               <Route path="services" element={<Services />} />
               <Route path="change-password" element={<ChangePassword />} />
+              <Route path="delete-account" element={<DeleteAccount />} />
               <Route path="logout" element={<Navigate to="/login" replace />} />
             </Route>
           </Route>
