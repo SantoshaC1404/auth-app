@@ -3,8 +3,12 @@ package com.substring.auth_app_backend.controllers;
 import com.substring.auth_app_backend.dtos.ChangePasswordRequest;
 import com.substring.auth_app_backend.dtos.UserDto;
 import com.substring.auth_app_backend.entities.User;
+import com.substring.auth_app_backend.repositories.PasswordResetTokenRepository;
+import com.substring.auth_app_backend.repositories.RefreshTokenRepository;
 import com.substring.auth_app_backend.repositories.UserRepository;
+import com.substring.auth_app_backend.security.CookieService;
 import com.substring.auth_app_backend.services.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,6 +30,9 @@ public class UserController {
     private UserService userService;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private RefreshTokenRepository refreshTokenRepository;
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private CookieService cookieService;
 
     //  create user api
     @PostMapping
@@ -85,5 +93,33 @@ public class UserController {
         userRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "Password changed successfully."));
+    }
+
+    /**
+     * DELETE /api/v1/users/me — deletes the authenticated user's account
+     */
+    @DeleteMapping("/me")
+    @Transactional
+    public ResponseEntity<Map<String, String>> deleteMyAccount(HttpServletResponse response) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadCredentialsException("User not found."));
+
+        String userId = user.getId();
+
+        // Delete all related tokens first (FK constraints)
+        passwordResetTokenRepository.deleteAllByUserId(userId);
+        refreshTokenRepository.deleteAllByUserId(userId);
+
+        // Delete user
+        userRepository.deleteById(userId);
+
+        // Clear cookie and security context
+        cookieService.clearRefreshTokenCookie(response);
+        cookieService.addNoStoreHeaders(response);
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.ok(Map.of("message", "Account deleted successfully."));
     }
 }

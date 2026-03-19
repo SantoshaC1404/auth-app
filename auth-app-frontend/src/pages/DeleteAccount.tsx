@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
@@ -25,15 +24,10 @@ import Header from "@/components/dashboard/Header";
 import { useDeleteAccount } from "@/hooks/useAuth";
 import { useAuthStore } from "@/store/auth.store";
 
-const CONFIRM_TEXT = "DELETE MY ACCOUNT";
-
 const DeleteAccount = () => {
-  const [inputValue, setInputValue] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const { submitDeleteAccount, isLoading } = useDeleteAccount();
   const user = useAuthStore((s) => s.user);
-
-  const isConfirmed = inputValue === CONFIRM_TEXT;
 
   return (
     <div className="flex">
@@ -81,33 +75,16 @@ const DeleteAccount = () => {
                   </ul>
                 </div>
 
-                {/* Confirmation input */}
-                <div className="space-y-2">
-                  <Label className="text-sm">
-                    Type{" "}
-                    <span className="font-mono font-bold text-destructive">
-                      {CONFIRM_TEXT}
-                    </span>{" "}
-                    to confirm
-                  </Label>
-                  <Input
-                    placeholder={CONFIRM_TEXT}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    className={`font-mono ${isConfirmed ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                  />
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                <div className="flex flex-row gap-3 pt-1">
                   <Button
                     variant="destructive"
-                    className="w-full cursor-pointer"
-                    disabled={!isConfirmed || isLoading}
+                    className="flex-1 cursor-pointer"
+                    disabled={isLoading}
                     onClick={() => setDialogOpen(true)}
                   >
                     Delete My Account
                   </Button>
-                  <Link to="/dashboard" className="w-full">
+                  <Link to="/dashboard" className="flex-1">
                     <Button variant="outline" className="w-full cursor-pointer">
                       Cancel
                     </Button>
