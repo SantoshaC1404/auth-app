@@ -15,7 +15,7 @@
 
 ## Overview
 
-Auth App is a production-grade, full-stack authentication platform demonstrating industry-standard security patterns. It goes beyond basic login — implementing rotating refresh tokens, OTP-based password reset, social OAuth2 login, role-based access control, idle session timeout, account deletion, and a layered frontend architecture.
+Auth App is a production-grade, full-stack authentication platform demonstrating industry-standard security patterns. It goes beyond basic login — implementing rotating refresh tokens, OTP-based password reset, social OAuth2 login, idle session timeout, account deletion, and a layered frontend architecture.
 
 ---
 
