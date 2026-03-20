@@ -22,43 +22,6 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-![Home Page](screenshots/home.png)
-
----
-
-### 🔐 Login Page
-![Login Page](screenshots/login.png)
-
----
-
-### 📝 Sign Up Page
-![Sign Up Page](screenshots/signup.png)
-
----
-
-### 📊 Dashboard
-![Dashboard](screenshots/dashboard.png)
-
----
-
-### 🔑 Forgot Password
-![Forgot Password](screenshots/forgot-password.png)
-
----
-
-### 🔄 Change Password
-![Change Password](screenshots/change-password.png)
-
----
-
-### ❌ Delete Account
-![Delete Account](screenshots/delete-account.png)
-
----
-
-## 📸 Screenshots
-
-### 🏠 Home Page
 <p align="center">
   <img src="screenshots/home.png" width="800"/>
 </p>
@@ -72,9 +35,37 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 
 ---
 
+### 📝 Sign Up Page
+<p align="center">
+  <img src="screenshots/signup.png" width="800"/>
+</p>
+
+---
+
 ### 📊 Dashboard
 <p align="center">
   <img src="screenshots/dashboard.png" width="800"/>
+</p>
+
+---
+
+### 🔑 Forgot Password
+<p align="center">
+  <img src="screenshots/forgot-password.png" width="800"/>
+</p>
+
+---
+
+### 🔄 Change Password
+<p align="center">
+  <img src="screenshots/change-password.png" width="800"/>
+</p>
+
+---
+
+### ❌ Delete Account
+<p align="center">
+  <img src="screenshots/delete-account.png" width="800"/>
 </p>
 
 ---
