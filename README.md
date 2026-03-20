@@ -82,6 +82,15 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
   <img src="screenshots/dashboard.png" width="45%" />
 </p>
 
+<p align="center">
+  <img src="screenshots/forgot-password.png" width="45%" />
+  <img src="screenshots/change-password.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="screenshots/delete-account.png" width="45%" />
+  <!-- <img src="screenshots/dashboard.png" width="45%" /> -->
+</p>
 ---
 
 ## Features
