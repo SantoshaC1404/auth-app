@@ -72,9 +72,13 @@ api.interceptors.response.use(
           name: data.userDto.name,
           email: data.userDto.email,
           image: data.userDto.image,
-          roles: data.userDto.roles.map((r: { name: string }) => r.name),
+          roles: data.userDto.roles.map((r: { name: string; }) => r.name),
+          provider: "LOCAL",
+          createdAt: "",
+          updatedAt: "",
+          loginAt: ""
         },
-        newToken,
+        newToken
       );
 
       // Drain queue
@@ -93,5 +97,5 @@ api.interceptors.response.use(
     } finally {
       refreshing = false;
     }
-  },
+  }
 );
