@@ -21,57 +21,6 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 
 ## 📸 Screenshots
 
-### 🏠 Home Page
-<p align="center">
-  <img src="screenshots/home.png" width="800"/>
-</p>
-
----
-
-### 🔐 Login Page
-<p align="center">
-  <img src="screenshots/login.png" width="800"/>
-</p>
-
----
-
-### 📝 Sign Up Page
-<p align="center">
-  <img src="screenshots/signup.png" width="800"/>
-</p>
-
----
-
-### 📊 Dashboard
-<p align="center">
-  <img src="screenshots/dashboard.png" width="800"/>
-</p>
-
----
-
-### 🔑 Forgot Password
-<p align="center">
-  <img src="screenshots/forgot-password.png" width="800"/>
-</p>
-
----
-
-### 🔄 Change Password
-<p align="center">
-  <img src="screenshots/change-password.png" width="800"/>
-</p>
-
----
-
-### ❌ Delete Account
-<p align="center">
-  <img src="screenshots/delete-account.png" width="800"/>
-</p>
-
----
-
-## 📸 Screenshots
-
 <p align="center">
   <img src="screenshots/home.png" width="45%" />
   <img src="screenshots/login.png" width="45%" />
@@ -91,6 +40,7 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
   <img src="screenshots/delete-account.png" width="45%" />
   <!-- <img src="screenshots/dashboard.png" width="45%" /> -->
 </p>
+
 ---
 
 ## Features
