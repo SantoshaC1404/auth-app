@@ -19,19 +19,40 @@ Auth App is a production-grade, full-stack authentication platform demonstrating
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-> **Note:** Take screenshots of your running app and place them in a `screenshots/` folder, then update the paths below.
+### 🏠 Home Page
+![Home Page](screenshots/home.png)
 
-| Page | Light | Dark |
-|------|-------|------|
-| **Home** | `screenshots/home-light.png` | `screenshots/home-dark.png` |
-| **Login** | `screenshots/login-light.png` | `screenshots/login-dark.png` |
-| **Sign Up** | `screenshots/signup-light.png` | `screenshots/signup-dark.png` |
-| **Dashboard** | `screenshots/dashboard-light.png` | `screenshots/dashboard-dark.png` |
-| **Forgot Password** | `screenshots/forgot-light.png` | — |
-| **Change Password** | `screenshots/change-password.png` | — |
-| **Delete Account** | `screenshots/delete-account.png` | — |
+---
+
+### 🔐 Login Page
+![Login Page](screenshots/login.png)
+
+---
+
+### 📝 Sign Up Page
+![Sign Up Page](screenshots/signup.png)
+
+---
+
+### 📊 Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+---
+
+### 🔑 Forgot Password
+![Forgot Password](screenshots/forgot-password.png)
+
+---
+
+### 🔄 Change Password
+![Change Password](screenshots/change-password.png)
+
+---
+
+### ❌ Delete Account
+![Delete Account](screenshots/delete-account.png)
 
 ---
 
