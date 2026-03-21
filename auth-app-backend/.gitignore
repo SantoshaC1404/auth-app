@@ -6,6 +6,9 @@ target/
 
 *.yml
 .env
+backend.env
+*.env
+Dockerfile
 
 ### STS ###
 .apt_generated
