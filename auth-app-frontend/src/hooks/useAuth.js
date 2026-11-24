@@ -63,7 +63,7 @@ export function useLogout() {
     setIsLoading(true);
     try {
       await logoutUser();
-      toast.success("Logged out.");
+      // toast.success("Logged out.");
       navigate("/login");
     } catch {
       toast.error("Logout failed.");

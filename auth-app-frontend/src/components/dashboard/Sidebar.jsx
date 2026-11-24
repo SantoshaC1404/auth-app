@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard", end: true },
-  { to: "/change-password", icon: KeyRound, label: "Security" },
+  { to: "/change-password", icon: KeyRound, label: "Change Password" },
   { to: "/about", icon: ShieldCheck, label: "About" },
   { to: "/services", icon: Layers, label: "Services" },
 ];
