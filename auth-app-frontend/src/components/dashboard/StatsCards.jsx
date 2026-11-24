@@ -9,7 +9,9 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuthStore } from "@/store/auth.store";
+
 function timeAgo(isoString) {
+  if (!isoString) return "—";
   const diff = Math.max(0, Date.now() - new Date(isoString).getTime());
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -24,13 +26,16 @@ function timeAgo(isoString) {
   if (weeks < 5) return `${weeks}w ago`;
   return `${months}mo ago`;
 }
+
 function formatDate(isoString) {
+  if (!isoString) return "—";
   return new Date(isoString).toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
 }
+
 const StatsCards = () => {
   const user = useAuthStore((s) => s.user);
   const providerLabel =
@@ -39,14 +44,16 @@ const StatsCards = () => {
       : user?.provider === "GITHUB"
         ? "GitHub"
         : "Local";
+
   const stats = [
     {
       label: "Account Status",
       value: "Active",
-      sub: "All systems normal",
+      sub: "All security systems normal",
       icon: ShieldCheck,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
+      border: "hover:border-emerald-500/40",
     },
     {
       label: "Auth Provider",
@@ -55,14 +62,16 @@ const StatsCards = () => {
       icon: Globe,
       color: "text-blue-500",
       bg: "bg-blue-500/10",
+      border: "hover:border-blue-500/40",
     },
     {
-      label: "Session",
-      value: "Active",
-      sub: "Auto-expires in 15 min idle",
+      label: "Session Token",
+      value: "Secure JWT",
+      sub: "Encrypted & HttpOnly",
       icon: Clock,
       color: "text-amber-500",
       bg: "bg-amber-500/10",
+      border: "hover:border-amber-500/40",
     },
     {
       label: "Last Login",
@@ -78,26 +87,30 @@ const StatsCards = () => {
       icon: LogIn,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
+      border: "hover:border-purple-500/40",
     },
     {
-      label: "Profile/Password Updated",
+      label: "Profile Updated",
       value: user?.updatedAt ? timeAgo(user.updatedAt) : "—",
       sub: user?.updatedAt ? formatDate(user.updatedAt) : "—",
       icon: KeyRound,
       color: "text-rose-500",
       bg: "bg-rose-500/10",
+      border: "hover:border-rose-500/40",
     },
     {
-      label: "Account Created",
+      label: "Member Since",
       value: user?.createdAt ? timeAgo(user.createdAt) : "—",
       sub: user?.createdAt ? formatDate(user.createdAt) : "—",
       icon: UserCheck,
       color: "text-indigo-500",
       bg: "bg-indigo-500/10",
+      border: "hover:border-indigo-500/40",
     },
   ];
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
       {stats.map((stat, i) => {
         const Icon = stat.icon;
         return (
@@ -107,20 +120,24 @@ const StatsCards = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08, duration: 0.4 }}
           >
-            <Card className="hover:shadow-md transition-shadow hover:scale-[1.03] transition-transform duration-200">
-              <CardContent className="pt-5 pb-5">
+            <Card
+              className={`border border-border/80 shadow-sm transition-all duration-200 hover:shadow-md ${stat.border} bg-card/60 backdrop-blur-xs`}
+            >
+              <CardContent className="p-6">
                 <div className="flex items-start justify-between">
-                  <div className="space-y-1 overflow-hidden">
-                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+                  <div className="space-y-1.5 overflow-hidden">
+                    <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                       {stat.label}
                     </p>
-                    <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-xs text-muted-foreground truncate">
+                    <p className="text-2xl font-extrabold tracking-tight">
+                      {stat.value}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate font-medium">
                       {stat.sub}
                     </p>
                   </div>
-                  <div className={`p-2.5 rounded-xl ${stat.bg} shrink-0`}>
-                    <Icon size={20} className={stat.color} />
+                  <div className={`p-3 rounded-2xl ${stat.bg} shrink-0`}>
+                    <Icon size={22} className={stat.color} />
                   </div>
                 </div>
               </CardContent>
@@ -131,4 +148,5 @@ const StatsCards = () => {
     </div>
   );
 };
+
 export default StatsCards;

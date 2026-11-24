@@ -1,8 +1,15 @@
 import { useAuthStore } from "@/store/auth.store";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogIn, KeyRound, UserCheck } from "lucide-react";
-// ─── Time helper ──────────────────────────────────────────────────────────────
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { LogIn, KeyRound, UserCheck, Shield } from "lucide-react";
+
 function timeAgo(isoString) {
+  if (!isoString) return "—";
   const diff = Math.max(0, Date.now() - new Date(isoString).getTime());
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -17,55 +24,74 @@ function timeAgo(isoString) {
   if (weeks < 5) return `${weeks} week${weeks !== 1 ? "s" : ""} ago`;
   return `${months} month${months !== 1 ? "s" : ""} ago`;
 }
+
 function formatDate(isoString) {
+  if (!isoString) return "—";
   return new Date(isoString).toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
 }
-// ─── Component ────────────────────────────────────────────────────────────────
+
 const RecentActivity = () => {
   const user = useAuthStore((s) => s.user);
   if (!user) return null;
+
   const activities = [
     {
       icon: LogIn,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
-      label: "Signed in",
-      detail: `Logged in ${timeAgo(user.loginAt)}`,
+      label: "Recent Authentication",
+      detail: `Signed in ${timeAgo(user.loginAt)}`,
     },
     {
       icon: KeyRound,
       color: "text-blue-500",
       bg: "bg-blue-500/10",
-      label: "Password / profile updated",
-      detail: `Last updated ${timeAgo(user.updatedAt)} · ${formatDate(user.updatedAt)}`,
+      label: "Profile / Security Update",
+      detail: `Last modified ${timeAgo(user.updatedAt)} (${formatDate(user.updatedAt)})`,
     },
     {
       icon: UserCheck,
-      color: "text-amber-500",
-      bg: "bg-amber-500/10",
-      label: "Account created",
-      detail: `Joined ${timeAgo(user.createdAt)} · ${formatDate(user.createdAt)}`,
+      color: "text-purple-500",
+      bg: "bg-purple-500/10",
+      label: "Account Registration",
+      detail: `Joined platform ${timeAgo(user.createdAt)} (${formatDate(user.createdAt)})`,
     },
   ];
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Recent Activity</CardTitle>
+    <Card className="border border-border/80 shadow-sm bg-card/60 backdrop-blur-xs">
+      <CardHeader className="pb-4">
+        <div className="flex items-center gap-2">
+          <div className="p-2 rounded-xl bg-primary/10">
+            <Shield size={18} className="text-primary" />
+          </div>
+          <div>
+            <CardTitle className="text-lg font-bold">Activity Log</CardTitle>
+            <CardDescription className="text-xs">
+              Recent security events and authentication milestones
+            </CardDescription>
+          </div>
+        </div>
       </CardHeader>
 
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4">
         {activities.map(({ icon: Icon, color, bg, label, detail }) => (
-          <div key={label} className="flex items-start gap-3">
-            <div className={`p-2 rounded-lg ${bg} shrink-0 mt-0.5`}>
-              <Icon size={14} className={color} />
+          <div
+            key={label}
+            className="flex items-start gap-4 p-3 rounded-xl bg-muted/30 border border-border/40 transition-colors hover:bg-muted/50"
+          >
+            <div className={`p-2.5 rounded-xl ${bg} shrink-0 mt-0.5`}>
+              <Icon size={16} className={color} />
             </div>
-            <div>
-              <p className="text-sm font-medium">{label}</p>
-              <p className="text-xs text-muted-foreground">{detail}</p>
+            <div className="space-y-0.5">
+              <p className="text-sm font-semibold">{label}</p>
+              <p className="text-xs text-muted-foreground font-medium">
+                {detail}
+              </p>
             </div>
           </div>
         ))}
@@ -73,4 +99,5 @@ const RecentActivity = () => {
     </Card>
   );
 };
+
 export default RecentActivity;

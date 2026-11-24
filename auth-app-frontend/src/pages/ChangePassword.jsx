@@ -59,7 +59,7 @@ const ChangePassword = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-h-screen pt-14 md:pt-0">
+      <div className="flex-1 flex flex-col min-h-screen pt-14 md:pt-0 md:ml-64">
         <div className="hidden md:block">
           <Header />
         </div>
