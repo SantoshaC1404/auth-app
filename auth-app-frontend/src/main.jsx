@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")).render(
   <ThemeProvider>
     <BrowserRouter>
       {/* Global Toast Container */}
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
 
       {/* Validates session on every app boot before rendering routes */}
       <SessionGuard>

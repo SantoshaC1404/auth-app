@@ -1,4 +1,16 @@
-import { Shield, Lock, User, Zap, Mail, Phone, MailCheck, Clock, Sparkles, CheckCircle, Folder } from "lucide-react";
+import {
+  Shield,
+  Lock,
+  User,
+  Zap,
+  Mail,
+  Phone,
+  MailCheck,
+  Clock,
+  Sparkles,
+  CheckCircle,
+  Folder,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "react-router";
@@ -35,7 +47,7 @@ export default function HomePage() {
   return (
     <div className="overflow-x-hidden bg-background text-foreground">
       {/* ===== HERO SECTION ===== */}
-      <section className="min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center text-center px-4 sm:px-6 py-16 sm:py-24 bg-gradient-to-b from-background via-muted/30 to-background border-b border-border/40">
+      <section className="min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center text-center px-4 sm:px-6 py-16 sm:py-24 bg-linear-to-b from-background via-muted/30 to-background border-b border-border/40">
         <motion.h1
           initial={title.hidden}
           animate={title.show}
@@ -59,8 +71,15 @@ export default function HomePage() {
 
         <div className="flex gap-4 flex-wrap justify-center">
           <NavLink to={isAuthenticated ? "/dashboard" : "/signup"}>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }} className="inline-block">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-full font-medium transition-all shadow-lg shadow-primary/20 cursor-pointer">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-block"
+            >
+              <Button
+                size="lg"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-full font-medium transition-all shadow-lg shadow-primary/20 cursor-pointer"
+              >
                 {isAuthenticated ? "Go to Dashboard" : "Get Started Free"}
               </Button>
             </motion.div>
@@ -75,22 +94,30 @@ export default function HomePage() {
             <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-card border border-border/60 shadow-xs">
               <Sparkles className="h-8 w-8 text-primary mb-1" />
               <span className="text-2xl font-bold tracking-tight">99.9%</span>
-              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Uptime guarantee</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                Uptime guarantee
+              </p>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-card border border-border/60 shadow-xs">
               <Lock className="h-8 w-8 text-primary mb-1" />
               <span className="text-2xl font-bold tracking-tight">256-bit</span>
-              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">AES encryption</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                AES encryption
+              </p>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-card border border-border/60 shadow-xs">
               <Shield className="h-8 w-8 text-primary mb-1" />
               <span className="text-2xl font-bold tracking-tight">GDPR</span>
-              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Compliant</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                Compliant
+              </p>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-card border border-border/60 shadow-xs">
               <CheckCircle className="h-8 w-8 text-primary mb-1" />
               <span className="text-2xl font-bold tracking-tight">50ms</span>
-              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Auth latency</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                Auth latency
+              </p>
             </div>
           </div>
         </div>
@@ -174,11 +201,12 @@ export default function HomePage() {
               className="group flex flex-col h-full bg-card text-card-foreground border border-border/80 rounded-2xl p-6 sm:p-8 transition-all shadow-sm hover:shadow-md hover:border-primary/50"
             >
               <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                <Icon className="text-primary group-hover:text-primary-foreground transition-colors" size={24} />
+                <Icon
+                  className="text-primary group-hover:text-primary-foreground transition-colors"
+                  size={24}
+                />
               </div>
-              <h3 className="font-semibold text-base mb-2">
-                {title}
-              </h3>
+              <h3 className="font-semibold text-base mb-2">{title}</h3>
               <p className="text-sm text-muted-foreground flex-1 leading-relaxed">
                 {desc}
               </p>
@@ -195,7 +223,8 @@ export default function HomePage() {
               How It Works
             </h2>
             <p className="text-muted-foreground text-base max-w-lg mx-auto">
-              Get your secure authentication system up and running in three simple steps.
+              Get your secure authentication system up and running in three
+              simple steps.
             </p>
           </div>
 
@@ -245,7 +274,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== CTA SECTION ===== */}
-      <section className="py-24 sm:py-32 overflow-hidden relative bg-gradient-to-b from-transparent to-muted/20">
+      <section className="py-24 sm:py-32 overflow-hidden relative bg-linear-to-b from-transparent to-muted/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 relative text-center">
           <motion.h2
             initial={title.hidden}
@@ -261,8 +290,15 @@ export default function HomePage() {
           </p>
           <div className="flex gap-4 flex-wrap justify-center">
             <NavLink to={isAuthenticated ? "/dashboard" : "/signup"}>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }} className="inline-block">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-full font-medium transition-all shadow-lg shadow-primary/20 cursor-pointer">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-block"
+              >
+                <Button
+                  size="lg"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-full font-medium transition-all shadow-lg shadow-primary/20 cursor-pointer"
+                >
                   {isAuthenticated ? "Go to Dashboard" : "Start Free Trial"}
                 </Button>
               </motion.div>

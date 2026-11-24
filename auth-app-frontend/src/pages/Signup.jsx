@@ -124,7 +124,7 @@ const Signup = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -149,7 +149,7 @@ const Signup = () => {
 
               <Button
                 type="submit"
-                className="w-full h-10 font-medium"
+                className="w-full h-10 font-medium cursor-pointer"
                 disabled={isLoading}
               >
                 {isLoading ? "Creating account..." : "Sign Up"}
@@ -167,7 +167,7 @@ const Signup = () => {
             <div className="space-y-3">
               <Button
                 variant="outline"
-                className="w-full gap-2 font-medium"
+                className="w-full gap-2 font-medium cursor-pointer"
                 type="button"
                 onClick={() =>
                   (window.location.href = `${OAUTH_BASE}/oauth2/authorization/google`)
