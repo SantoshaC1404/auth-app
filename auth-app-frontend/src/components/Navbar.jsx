@@ -1,10 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { LogOut, LayoutDashboard, Menu, KeyRound, Trash2 } from "lucide-react";
+import {
+  LogOut,
+  LayoutDashboard,
+  Menu,
+  KeyRound,
+  Trash2,
+  Sparkles,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { ThemeToggle } from "./theme-toggle";
 import { useAuthStore } from "@/store/auth.store";
 import { useLogout } from "@/hooks/useAuth";
+
 // ─── Profile Dropdown ─────────────────────────────────────────────────────────
 const ProfileMenu = () => {
   const [open, setOpen] = useState(false);
@@ -19,6 +27,7 @@ const ProfileMenu = () => {
         .join("")
         .toUpperCase()
     : "?";
+
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -28,6 +37,7 @@ const ProfileMenu = () => {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
   return (
     <div ref={ref} className="relative">
       <button
@@ -97,19 +107,19 @@ const ProfileMenu = () => {
     </div>
   );
 };
+
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
   return (
-    <nav className="fixed top-0 left-0 w-full h-14 flex items-center justify-between px-6 md:px-10 bg-background border-b border-border z-50">
+    <nav className="fixed top-0 left-0 w-full h-16 flex items-center justify-between px-6 md:px-10 bg-background/80 backdrop-blur-sm border-b border-border/50 z-50">
       {/* Brand */}
-      <div className="font-bold flex items-center gap-2">
-        <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-gradient-to-r from-primary to-primary/40 text-white text-xs">
-          A
-        </span>
-        <NavLink to="/" className="text-base tracking-tight font-bold">
-          Auth
+      <div className="font-bold flex items-center gap-2.5">
+        <Sparkles className="h-6 w-6 text-primary" />
+        <NavLink to="/" className="text-lg tracking-tight font-bold">
+          AuthFlow
         </NavLink>
       </div>
 
@@ -128,32 +138,19 @@ const Navbar = () => {
           )}
         </NavLink>
 
-        {/* About & Services — only when logged in */}
+        {/* Dashboard — only when logged in */}
         {isAuthenticated && (
-          <>
-            <NavLink to="/about">
-              {({ isActive }) => (
-                <Button
-                  size="sm"
-                  variant={isActive ? "default" : "outline"}
-                  className="cursor-pointer"
-                >
-                  About
-                </Button>
-              )}
-            </NavLink>
-            <NavLink to="/services">
-              {({ isActive }) => (
-                <Button
-                  size="sm"
-                  variant={isActive ? "default" : "outline"}
-                  className="cursor-pointer"
-                >
-                  Services
-                </Button>
-              )}
-            </NavLink>
-          </>
+          <NavLink to="/dashboard">
+            {({ isActive }) => (
+              <Button
+                size="sm"
+                variant={isActive ? "default" : "outline"}
+                className="cursor-pointer"
+              >
+                Dashboard
+              </Button>
+            )}
+          </NavLink>
         )}
 
         {/* Login & Signup — only when logged out */}
@@ -192,14 +189,14 @@ const Navbar = () => {
       <div className="md:hidden flex items-center gap-2">
         <ThemeToggle />
         {isAuthenticated && <ProfileMenu />}
-        <button onClick={() => setMobileOpen(!mobileOpen)}>
+        <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2">
           <Menu size={24} />
         </button>
       </div>
 
       {/* Mobile slide-down */}
       {mobileOpen && (
-        <div className="absolute top-14 left-0 w-full bg-background border-b border-border flex flex-col items-center gap-3 py-6 md:hidden">
+        <div className="absolute top-16 left-0 w-full bg-background border-b border-border flex flex-col items-center gap-3 py-6 md:hidden shadow-lg">
           <NavLink to="/" end onClick={() => setMobileOpen(false)}>
             {({ isActive }) => (
               <Button
@@ -213,30 +210,17 @@ const Navbar = () => {
           </NavLink>
 
           {isAuthenticated && (
-            <>
-              <NavLink to="/about" onClick={() => setMobileOpen(false)}>
-                {({ isActive }) => (
-                  <Button
-                    size="sm"
-                    variant={isActive ? "default" : "outline"}
-                    className="cursor-pointer w-36"
-                  >
-                    About
-                  </Button>
-                )}
-              </NavLink>
-              <NavLink to="/services" onClick={() => setMobileOpen(false)}>
-                {({ isActive }) => (
-                  <Button
-                    size="sm"
-                    variant={isActive ? "default" : "outline"}
-                    className="cursor-pointer w-36"
-                  >
-                    Services
-                  </Button>
-                )}
-              </NavLink>
-            </>
+            <NavLink to="/dashboard" onClick={() => setMobileOpen(false)}>
+              {({ isActive }) => (
+                <Button
+                  size="sm"
+                  variant={isActive ? "default" : "outline"}
+                  className="cursor-pointer w-36"
+                >
+                  Dashboard
+                </Button>
+              )}
+            </NavLink>
           )}
 
           {!isAuthenticated && (
@@ -270,4 +254,5 @@ const Navbar = () => {
     </nav>
   );
 };
+
 export default Navbar;
