@@ -56,129 +56,118 @@ const Signup = () => {
     setFocus(firstKey);
     toast.error(errs[firstKey]?.message ?? "Invalid input");
   };
-  const labelStyle = {
-    fontSize: "12px",
-    fontWeight: 500,
-  };
   return (
-    <>
-      <div className="auth-bg flex-1">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-md"
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">Create Account</CardTitle>
-              <CardDescription>
-                Sign up to start using the platform
-              </CardDescription>
-            </CardHeader>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-muted/20">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <Card className="shadow-lg border-border/60">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
+            <CardDescription>
+              Sign up to start using the platform
+            </CardDescription>
+          </CardHeader>
 
-            <CardContent>
-              <form
-                onSubmit={handleSubmit(onSubmit, onError)}
-                className="space-y-4"
-              >
-                {/* Name */}
-                <div className="space-y-2">
-                  <Label style={labelStyle}>
-                    Name <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                      <HiOutlineUser size={16} />
-                    </span>
-                    <Input
-                      placeholder="John Doe"
-                      {...register("name")}
-                      className={`pl-9 ${errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-                    />
-                  </div>
+          <CardContent className="space-y-4">
+            <form
+              onSubmit={handleSubmit(onSubmit, onError)}
+              className="space-y-4"
+            >
+              {/* Name */}
+              <div className="space-y-2">
+                <Label>Name</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                    <HiOutlineUser size={16} />
+                  </span>
+                  <Input
+                    placeholder="John Doe"
+                    {...register("name")}
+                    className={`pl-9 ${errors.name ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                  />
                 </div>
+              </div>
 
-                {/* Email */}
-                <div className="space-y-2">
-                  <Label style={labelStyle}>
-                    Email <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                      <HiOutlineMail size={16} />
-                    </span>
-                    <Input
-                      type="email"
-                      placeholder="example@email.com"
-                      {...register("email")}
-                      className={`pl-9 ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-                    />
-                  </div>
+              {/* Email */}
+              <div className="space-y-2">
+                <Label>Email</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                    <HiOutlineMail size={16} />
+                  </span>
+                  <Input
+                    type="email"
+                    placeholder="example@email.com"
+                    {...register("email")}
+                    className={`pl-9 ${errors.email ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                  />
                 </div>
+              </div>
 
-                {/* Password */}
-                <div className="space-y-2">
-                  <Label style={labelStyle}>
-                    Password <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                      <HiOutlineLockClosed size={16} />
-                    </span>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter password"
-                      {...register("password")}
-                      className={`pl-9 pr-10 ${errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  </div>
+              {/* Password */}
+              <div className="space-y-2">
+                <Label>Password</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                    <HiOutlineLockClosed size={16} />
+                  </span>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    {...register("password")}
+                    className={`pl-9 pr-10 ${errors.password ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
                 </div>
+              </div>
 
-                {/* Confirm Password */}
-                <div className="space-y-2">
-                  <Label style={labelStyle}>
-                    Confirm Password <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                      <HiOutlineLockClosed size={16} />
-                    </span>
-                    <Input
-                      type="password"
-                      placeholder="Confirm password"
-                      {...register("confirmPassword")}
-                      className={`pl-9 ${errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-                    />
-                  </div>
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                <Label>Confirm Password</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                    <HiOutlineLockClosed size={16} />
+                  </span>
+                  <Input
+                    type="password"
+                    placeholder="Confirm password"
+                    {...register("confirmPassword")}
+                    className={`pl-9 ${errors.confirmPassword ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                  />
                 </div>
-
-                <Button
-                  type="submit"
-                  className="w-full cursor-pointer hover:bg-gray-400"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Creating account..." : "Sign Up"}
-                </Button>
-              </form>
-
-              {/* Divider */}
-              <div className="flex items-center gap-2 my-6">
-                <div className="h-px flex-1 bg-border" />
-                <span className="text-xs text-muted-foreground">OR</span>
-                <div className="h-px flex-1 bg-border" />
               </div>
 
               <Button
+                type="submit"
+                className="w-full h-10 font-medium"
+                disabled={isLoading}
+              >
+                {isLoading ? "Creating account..." : "Sign Up"}
+              </Button>
+            </form>
+
+            <div className="flex items-center gap-2 my-4">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground font-medium">
+                OR
+              </span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <div className="space-y-3">
+              <Button
                 variant="outline"
-                className="w-full flex items-center gap-2 mb-3 cursor-pointer"
+                className="w-full gap-2 font-medium"
                 type="button"
                 onClick={() =>
                   (window.location.href = `${OAUTH_BASE}/oauth2/authorization/google`)
@@ -186,32 +175,21 @@ const Signup = () => {
               >
                 <FcGoogle size={18} /> Continue with Google
               </Button>
+            </div>
 
-              <Button
-                variant="outline"
-                className="w-full flex items-center gap-2 cursor-pointer"
-                type="button"
-                onClick={() =>
-                  (window.location.href = `${OAUTH_BASE}/oauth2/authorization/github`)
-                }
+            <p className="text-sm text-center text-muted-foreground">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-primary font-medium hover:underline"
               >
-                <FaGithub size={18} /> Continue with GitHub
-              </Button>
-
-              <p className="text-sm text-center text-muted-foreground mt-6">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="text-primary font-medium hover:underline"
-                >
-                  Login
-                </Link>
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-    </>
+                Login
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
   );
 };
 export default Signup;

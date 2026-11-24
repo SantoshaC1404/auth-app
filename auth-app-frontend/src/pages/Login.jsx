@@ -123,7 +123,9 @@ const Login = () => {
 
             <div className="flex items-center gap-2">
               <div className="h-px flex-1 bg-border" />
-              <span className="text-xs text-muted-foreground font-medium">OR</span>
+              <span className="text-xs text-muted-foreground font-medium">
+                OR
+              </span>
               <div className="h-px flex-1 bg-border" />
             </div>
 
