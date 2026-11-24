@@ -141,6 +141,18 @@ const Login = () => {
                 <FcGoogle size={18} />
                 Continue with Google
               </Button>
+
+              <Button
+                variant="outline"
+                className="w-full gap-2 font-medium cursor-pointer"
+                type="button"
+                onClick={() =>
+                  (window.location.href = `${OAUTH_BASE}/oauth2/authorization/github`)
+                }
+              >
+                <FaGithub size={18} />
+                Continue with GitHub
+              </Button>
             </div>
 
             <p className="text-sm text-center text-muted-foreground">
