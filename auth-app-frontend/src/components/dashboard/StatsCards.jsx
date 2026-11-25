@@ -116,9 +116,10 @@ const StatsCards = () => {
         return (
           <motion.div
             key={stat.label}
+            whileHover={{ rotate: 2, scale: 1 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08, duration: 0.4 }}
+            transition={{ duration: 0.25 }}
           >
             <Card
               className={`border border-border/80 shadow-sm transition-all duration-200 hover:shadow-md ${stat.border} bg-card/60 backdrop-blur-xs`}
