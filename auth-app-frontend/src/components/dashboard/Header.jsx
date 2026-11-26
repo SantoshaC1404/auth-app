@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Bell, Sparkles, LogOut, LayoutDashboard, KeyRound, Trash2, User } from "lucide-react";
+import {
+  Bell,
+  Sparkles,
+  LogOut,
+  LayoutDashboard,
+  KeyRound,
+  Trash2,
+  User,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuthStore } from "@/store/auth.store";
@@ -34,7 +42,7 @@ const ProfileMenu = () => {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center justify-center h-9 w-9 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-sm shadow-primary/20 cursor-pointer hover:opacity-90 transition-opacity focus:outline-none"
+        className="flex items-center justify-center h-10 w-10 rounded-xl bg-primary text-primary-foreground text-sm font-bold shadow-sm shadow-primary/20 cursor-pointer hover:opacity-90 transition-opacity focus:outline-none"
         aria-label="Profile menu"
       >
         {initials}
@@ -113,7 +121,7 @@ const ProfileMenu = () => {
 
 const Header = () => {
   return (
-    <header className="h-16 border-b border-border/50 bg-background/80 backdrop-blur-md px-6 flex items-center justify-between shrink-0 sticky top-0 z-30">
+    <header className="h-16 border-b border-border/50 bg-background/80 backdrop-blur-md px-6 flex items-center justify-between shrink-0 fixed top-0 right-0 left-0 md:left-64 z-30">
       <div className="flex items-center gap-3">
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 bg-muted px-2.5 py-1 rounded-md">
           {new Date().toLocaleDateString("en-US", {
