@@ -71,7 +71,7 @@ const Services = () => {
   return (
     <div className="pt-14">
       {/* Hero */}
-      <section className="min-h-[40vh] flex flex-col justify-center items-center text-center px-6 bg-gradient-to-b from-background to-muted">
+      <section className="min-h-[40vh] flex flex-col justify-center items-center text-center px-6 bg-linear-to-b from-background to-muted">
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
