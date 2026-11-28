@@ -18,7 +18,7 @@ export const DeleteAccountModal = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[340px] border-destructive/20 shadow-2xl z-[100] rounded-3xl p-5">
+      <DialogContent className="max-w-85 border-destructive/20 shadow-2xl z-100 rounded-3xl p-5">
         <DialogHeader className="space-y-2 text-center">
           <div className="mx-auto w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center text-destructive mb-1">
             <TriangleAlert size={20} />
